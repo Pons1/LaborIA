@@ -65,11 +65,33 @@
     </nav>
 
     <!-- Corregido: py-32 a py-20 en móvil -->
-    <header class="container mx-auto px-4 py-20 md:py-32 text-center overflow-hidden">
-        <h1 class="text-4xl md:text-8xl font-bold mb-6 tracking-tighter" data-aos="zoom-out">
+   <header class="container mx-auto px-4 py-20 md:py-32 text-center overflow-hidden flex flex-col items-center">
+        
+        <!-- Logo SVG grande centrado sobre el título -->
+        <div data-aos="zoom-in" data-aos-duration="1200" class="mb-8">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                <defs>
+                    <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#3b82f6" />
+                        <stop offset="100%" stop-color="#06b6d4" />
+                    </linearGradient>
+                </defs>
+                <!-- Líneas y Nodos -->
+                <path d="M 30 20 L 30 75 L 75 75" fill="none" stroke="url(#heroGlow)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M 30 50 L 55 40 L 65 55" fill="none" stroke="#06b6d4" stroke-width="4" stroke-dasharray="4 4" opacity="0.6" />
+                <circle cx="30" cy="20" r="8" fill="#06b6d4" />
+                <circle cx="30" cy="50" r="6" fill="#ffffff" />
+                <circle cx="30" cy="75" r="10" fill="#3b82f6" />
+                <circle cx="55" cy="75" r="6" fill="#06b6d4" />
+                <circle cx="75" cy="75" r="8" fill="#3b82f6" />
+                <circle cx="55" cy="40" r="5" fill="#3b82f6" />
+            </svg>
+        </div>
+
+        <h1 class="text-4xl md:text-8xl font-bold mb-6 tracking-tighter" data-aos="zoom-out" data-aos-delay="300">
             <span class="typing-text" id="typewriter"></span>
         </h1>
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="500">
+        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="600">
             Sistema inteligente de análisis predictivo basado en Big Data para la provincia de València.
         </p>
     </header>
