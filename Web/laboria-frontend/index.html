@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LaborIA València | Dynamic IA Platform</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,13 +14,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <style>
-        /* Bloqueamos el scroll horizontal que causa el efecto de 'web ampliada' */
-        html, body { 
-            overflow-x: hidden; 
-            width: 100%;
-            position: relative;
-        }
-
+        html, body { overflow-x: hidden; width: 100%; position: relative; }
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; scroll-behavior: smooth; }
         h1, h2, h3, .nav-link { font-family: 'Rajdhani', sans-serif; }
         
@@ -29,11 +24,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .glass-card:hover {
-            transform: translateY(-10px);
-            border: 1px solid #3b82f6;
-            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
-        }
+        .glass-card:hover { border: 1px solid #3b82f6; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.10); }
 
         .bg-glow {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -43,8 +34,6 @@
 
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
-
-        /* Ajuste para que el canvas no rompa el móvil */
         canvas { max-width: 100% !important; }
     </style>
 </head>
@@ -64,19 +53,15 @@
         </div>
     </nav>
 
-    <!-- Corregido: py-32 a py-20 en móvil -->
-   <header class="container mx-auto px-4 py-20 md:py-32 text-center overflow-hidden flex flex-col items-center">
-        
-        <!-- Logo SVG grande centrado sobre el título -->
-        <div data-aos="zoom-in" data-aos-duration="1200" class="mb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-24 h-24 md:w-32 md:h-32 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+    <header class="container mx-auto px-4 py-20 text-center flex flex-col items-center">
+        <div data-aos="zoom-in" data-aos-duration="1200" class="mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-20 h-20 md:w-28 md:h-28 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
                 <defs>
                     <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#3b82f6" />
                         <stop offset="100%" stop-color="#06b6d4" />
                     </linearGradient>
                 </defs>
-                <!-- Líneas y Nodos -->
                 <path d="M 30 20 L 30 75 L 75 75" fill="none" stroke="url(#heroGlow)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M 30 50 L 55 40 L 65 55" fill="none" stroke="#06b6d4" stroke-width="4" stroke-dasharray="4 4" opacity="0.6" />
                 <circle cx="30" cy="20" r="8" fill="#06b6d4" />
@@ -87,90 +72,89 @@
                 <circle cx="55" cy="40" r="5" fill="#3b82f6" />
             </svg>
         </div>
-
-        <h1 class="text-4xl md:text-8xl font-bold mb-6 tracking-tighter" data-aos="zoom-out" data-aos-delay="300">
-            <span class="typing-text" id="typewriter"></span>
-        </h1>
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="600">
-            Sistema inteligente de análisis predictivo basado en Big Data para la provincia de València.
-        </p>
+        <h1 class="text-4xl md:text-7xl font-bold mb-4 tracking-tighter"><span class="typing-text" id="typewriter"></span></h1>
+        <p class="text-gray-400 md:text-lg max-w-2xl mx-auto">Sistema de análisis predictivo y visualización del mercado laboral.</p>
     </header>
 
-    <!-- Corregido: espacio-y-40 a espacio-y-20 en móvil -->
-    <main class="container mx-auto px-4 space-y-20 md:space-y-40 pb-20 overflow-hidden">
-
-        <section id="proyecto" class="scroll-mt-24">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="glass-card p-6 md:p-10 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
-                    <i data-lucide="database" class="text-blue-500 mb-6 w-10 h-10"></i>
-                    <h3 class="text-2xl font-bold mb-4">Arquitectura NoSQL</h3>
-                    <p class="text-gray-500 leading-relaxed text-sm md:text-base">Ingesta masiva desde Open Data València hacia clústeres de MongoDB.</p>
-                </div>
-                <div class="glass-card p-6 md:p-10 rounded-3xl" data-aos="fade-up" data-aos-delay="200">
-                    <i data-lucide="trending-up" class="text-blue-500 mb-6 w-10 h-10"></i>
-                    <h3 class="text-2xl font-bold mb-4">Machine Learning</h3>
-                    <p class="text-gray-500 leading-relaxed text-sm md:text-base">Modelos de regresión que proyectan tendencias de contratación por sector.</p>
-                </div>
-                <div class="glass-card p-6 md:p-10 rounded-3xl" data-aos="fade-up" data-aos-delay="300">
-                    <i data-lucide="graduation-cap" class="text-blue-500 mb-6 w-10 h-10"></i>
-                    <h3 class="text-2xl font-bold mb-4">Impacto Abastos</h3>
-                    <p class="text-gray-500 leading-relaxed text-sm md:text-base">Herramienta directa para la orientación laboral de alumnos de FP.</p>
-                </div>
-            </div>
-        </section>
-
+    <main class="container mx-auto px-4 space-y-24 pb-20 overflow-hidden">
+        
+        <!-- DASHBOARD MULTI-GRÁFICO -->
         <section id="datos" class="scroll-mt-24">
-            <!-- Corregido: p-12 a p-6 en móvil -->
-            <div class="glass-card p-6 md:p-12 rounded-3xl md:rounded-[3rem]">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 text-center mb-10 md:mb-16">
-                    <div data-aos="fade-right">
-                        <h4 class="text-gray-500 text-[10px] md:text-sm uppercase tracking-widest mb-2">Contratos Analizados</h4>
-                        <div class="text-3xl md:text-5xl font-bold text-blue-500 counter" data-target="15420">0</div>
-                    </div>
-                    <div data-aos="fade-up">
-                        <h4 class="text-gray-500 text-[10px] md:text-sm uppercase tracking-widest mb-2">Precisión de Inferencia</h4>
-                        <div class="text-3xl md:text-5xl font-bold text-white counter" data-target="94">0</div>
-                    </div>
-                    <div data-aos="fade-left">
-                        <h4 class="text-gray-500 text-[10px] md:text-sm uppercase tracking-widest mb-2">Municipios</h4>
-                        <div class="text-3xl md:text-5xl font-bold text-blue-500 counter" data-target="266">0</div>
-                    </div>
+            <div class="glass-card p-6 md:p-10 rounded-[2rem]">
+                <div id="db-status" class="text-center text-sm font-mono text-yellow-500 mb-8 animate-pulse">
+                    Conectando con MongoDB Cluster...
                 </div>
-                <div class="h-[250px] md:h-[400px]" data-aos="zoom-in">
-                    <canvas id="mainChart"></canvas>
-                </div>
-            </div>
-        </section>
 
-        <section id="agente" class="scroll-mt-24">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-                <div data-aos="fade-right">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-8 uppercase">NÚCLEO DE <span class="text-blue-500">PREDICCIÓN</span></h2>
-                    <div class="space-y-6">
-                        <div class="bg-white/5 p-4 rounded-xl border border-white/10 hover:border-blue-500 transition">
-                            <label class="text-xs text-gray-500 uppercase">Sector Profesional</label>
-                            <select class="w-full bg-transparent outline-none text-base md:text-lg text-white appearance-none">
-                                <option class="bg-black">Servicios y Comercio</option>
-                                <option class="bg-black">Industria Manufacturera</option>
-                                <option class="bg-black">Hostelería y Turismo</option>
-                            </select>
-                        </div>
-                        <button onclick="simularPrediccion()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 md:py-5 rounded-2xl font-bold text-base md:text-lg transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)]">
-                            SOLICITAR INFERENCIA
-                        </button>
+                <!-- Contadores Top -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
+                    <div>
+                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Volumen de Contratos</h4>
+                        <div id="count-contratos" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Precisión Predictiva</h4>
+                        <div id="count-precision" class="text-4xl font-bold text-white counter" data-target="0">0</div>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Municipios Mapeados</h4>
+                        <div id="count-municipios" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
                     </div>
                 </div>
                 
-                <div class="bg-black border border-white/10 rounded-2xl p-4 md:p-6 font-mono text-xs md:text-sm h-[250px] md:h-[300px] overflow-hidden relative shadow-2xl" data-aos="fade-left">
+                <!-- Grid de Gráficas -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Gráfica Principal (Ocupa todo el ancho en móvil, 3 columnas en PC) -->
+                    <div class="lg:col-span-3 bg-black/40 rounded-2xl p-4 border border-white/5">
+                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Evolución Histórica</h3>
+                        <div class="h-[250px] md:h-[350px]">
+                            <canvas id="chartAnual"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica Sectores -->
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Impacto por Sector</h3>
+                        <div class="h-[200px] w-full relative">
+                            <canvas id="chartSector"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica Edades -->
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Distribución por Edad</h3>
+                        <div class="h-[200px] w-full relative">
+                            <canvas id="chartEdad"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica Género -->
+                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Brecha de Género</h3>
+                        <div class="h-[200px] w-full relative">
+                            <canvas id="chartGenero"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Agente IA (Mantenida igual) -->
+        <section id="agente" class="scroll-mt-24">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div data-aos="fade-right">
+                    <h2 class="text-3xl md:text-5xl font-bold mb-8 uppercase">NÚCLEO DE <span class="text-blue-500">PREDICCIÓN</span></h2>
+                    <div class="space-y-6">
+                        <button onclick="simularPrediccion()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-bold text-lg transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+                            INICIALIZAR MODELO
+                        </button>
+                    </div>
+                </div>
+                <div class="bg-black border border-white/10 rounded-2xl p-6 font-mono text-sm h-[250px] overflow-hidden relative shadow-2xl" data-aos="fade-left">
                     <div class="flex space-x-2 mb-4 border-b border-white/5 pb-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="text-gray-600 ml-4">Terminal_IA_v1.0</span>
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <span class="text-gray-600 ml-4">Terminal_IA_v2.0</span>
                     </div>
-                    <div id="console-output" class="space-y-2 text-green-400">
-                        <p>> Esperando comandos...</p>
-                    </div>
+                    <div id="console-output" class="space-y-2 text-green-400"><p>> Esperando ejecución...</p></div>
                 </div>
             </div>
         </section>
@@ -180,74 +164,154 @@
         AOS.init({ duration: 1000, once: true });
         lucide.createIcons();
 
-        const text = "ANALIZANDO EL MERCADO"; // Acortado un poco para que no rompa en móviles muy pequeños
+        const text = "ANALIZANDO EL MERCADO";
         let i = 0;
         function typeWriter() {
-            if (i < text.length) {
-                document.getElementById("typewriter").innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 100);
-            }
+            if (i < text.length) { document.getElementById("typewriter").innerHTML += text.charAt(i); i++; setTimeout(typeWriter, 100); }
         }
         typeWriter();
 
-        const counters = document.querySelectorAll('.counter');
-        counters.forEach(counter => {
-            const target = +counter.getAttribute('data-target');
-            const updateCount = () => {
-                const count = +counter.innerText.replace('%', '');
-                const inc = target / 50;
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 40);
-                } else {
-                    counter.innerText = target + (target === 94 ? "%" : "");
-                }
-            };
-            updateCount();
-        });
+        // Variables para destruir gráficas si recargamos
+        let charts = {};
 
-        const ctx = document.getElementById('mainChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN'],
-                datasets: [{
-                    label: 'Proyección 2024',
-                    data: [1200, 1900, 1700, 2500, 2800, 3200],
-                    borderColor: '#3b82f6',
-                    tension: 0.4,
-                    pointRadius: 0,
-                    fill: true,
-                    backgroundColor: 'rgba(59, 130, 246, 0.05)'
-                }]
-            },
-            options: { 
-                maintainAspectRatio: false, 
-                responsive: true,
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { ticks: { color: '#666', font: { size: 10 } } },
-                    x: { ticks: { color: '#666', font: { size: 10 } } }
-                }
+        // Paletas de colores Cyberpunk
+        const colors = {
+            blue: 'rgba(59, 130, 246, 0.8)',
+            cyan: 'rgba(6, 182, 212, 0.8)',
+            purple: 'rgba(139, 92, 246, 0.8)',
+            pink: 'rgba(236, 72, 153, 0.8)'
+        };
+
+        Chart.defaults.color = '#666';
+        Chart.defaults.font.family = 'Inter';
+
+        async function cargarDatosBD() {
+            const statusDiv = document.getElementById('db-status');
+            try {
+                const response = await fetch('http://localhost:3000/api/stats');
+                if (!response.ok) throw new Error("Error en el servidor");
+                const data = await response.json();
+
+                // Actualizar contadores
+                document.getElementById('count-contratos').setAttribute('data-target', data.contratos);
+                document.getElementById('count-precision').setAttribute('data-target', data.precision);
+                document.getElementById('count-municipios').setAttribute('data-target', data.municipios);
+
+                statusDiv.innerText = "🟢 Conectado a MongoDB | Sincronización completa";
+                statusDiv.classList.remove('text-yellow-500', 'animate-pulse');
+                statusDiv.classList.add('text-green-500');
+
+                // Pintar todas las gráficas
+                renderLineChart('chartAnual', data.graficaAnual);
+                renderDoughnutChart('chartSector', data.graficaSector);
+                renderBarChart('chartEdad', data.graficaEdad);
+                renderPieChart('chartGenero', data.graficaGenero);
+
+            } catch (error) {
+                console.error("Error:", error);
+                statusDiv.innerText = "🔴 Error de conexión - Comprueba el Backend";
+                statusDiv.classList.add('text-red-500');
+            } finally {
+                animarContadores();
             }
-        });
+        }
 
-        function simularPrediccion() {
-            const output = document.getElementById('console-output');
-            output.innerHTML = "";
-            const logs = [
-                "> Conectando clúster...",
-                "> Extrayendo datasets...",
-                "> Ejecutando regresión...",
-                "> RESULTADO: +12.4% previsto."
-            ];
-            logs.forEach((log, index) => {
-                setTimeout(() => {
-                    output.innerHTML += `<p class="animate-pulse">${log}</p>`;
-                }, index * 600);
+        function animarContadores() {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText.replace(/,/g, '').replace('%', '');
+                    const inc = Math.max(1, Math.ceil(target / 40)); 
+                    if (count < target) {
+                        counter.innerText = (count + inc).toLocaleString();
+                        setTimeout(updateCount, 40);
+                    } else {
+                        counter.innerText = target.toLocaleString() + (counter.id === 'count-precision' ? "%" : "");
+                    }
+                };
+                updateCount();
             });
         }
+
+        // --- FUNCIONES DE GRÁFICOS ---
+        function clearChart(id) { if(charts[id]) charts[id].destroy(); }
+
+        function renderLineChart(id, data) {
+            clearChart(id);
+            charts[id] = new Chart(document.getElementById(id), {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Contratos Anuales',
+                        data: data.datos,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        fill: true, tension: 0.4, pointRadius: 3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderDoughnutChart(id, data) {
+            clearChart(id);
+            charts[id] = new Chart(document.getElementById(id), {
+                type: 'doughnut',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.datos,
+                        backgroundColor: [colors.blue, colors.cyan, colors.purple, colors.pink, '#475569'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderBarChart(id, data) {
+            clearChart(id);
+            charts[id] = new Chart(document.getElementById(id), {
+                type: 'bar',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Contratos por Edad',
+                        data: data.datos,
+                        backgroundColor: colors.cyan,
+                        borderRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        }
+
+        function renderPieChart(id, data) {
+            clearChart(id);
+            charts[id] = new Chart(document.getElementById(id), {
+                type: 'pie',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        data: data.datos,
+                        backgroundColor: [colors.pink, colors.blue, colors.purple],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', boxWidth: 12 } } } }
+            });
+        }
+
+        function simularPrediccion() {
+            const out = document.getElementById('console-output');
+            out.innerHTML = "";
+            ["> Ingestando datos...", "> Limpiando outliers...", "> Entrenando Random Forest...", "> Predicción: Demanda en el sector Servicios +14%"].forEach((log, i) => {
+                setTimeout(() => out.innerHTML += `<p class="animate-pulse">${log}</p>`, i * 700);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', cargarDatosBD);
     </script>
 </body>
 </html>
