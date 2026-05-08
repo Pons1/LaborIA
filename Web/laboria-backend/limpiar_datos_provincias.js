@@ -42,4 +42,4 @@ async function normalizarProvincias() {
     }
 }
 
-normalizarProvincias();
+normalizarProvincias();/home/aibg/Escritorio/LaborIA

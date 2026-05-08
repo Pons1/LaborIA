@@ -35,6 +35,12 @@
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
         canvas { max-width: 100% !important; }
+        
+        /* Estilos para el scrollbar de la terminal */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.6); }
     </style>
 </head>
 <body>
@@ -78,14 +84,12 @@
 
     <main class="container mx-auto px-4 space-y-24 pb-20 overflow-hidden">
         
-        <!-- DASHBOARD MULTI-GRÁFICO -->
         <section id="datos" class="scroll-mt-24">
             <div class="glass-card p-6 md:p-10 rounded-[2rem]">
                 <div id="db-status" class="text-center text-sm font-mono text-yellow-500 mb-8 animate-pulse">
                     Conectando con MongoDB Cluster...
                 </div>
 
-                <!-- Contadores Top -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
                     <div>
                         <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Volumen de Contratos</h4>
@@ -101,9 +105,7 @@
                     </div>
                 </div>
                 
-                <!-- Grid de Gráficas -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Gráfica Principal (Ocupa todo el ancho en móvil, 3 columnas en PC) -->
                     <div class="lg:col-span-3 bg-black/40 rounded-2xl p-4 border border-white/5">
                         <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Evolución Histórica</h3>
                         <div class="h-[250px] md:h-[350px]">
@@ -111,7 +113,6 @@
                         </div>
                     </div>
 
-                    <!-- Gráfica Sectores -->
                     <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
                         <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Impacto por Sector</h3>
                         <div class="h-[200px] w-full relative">
@@ -119,7 +120,6 @@
                         </div>
                     </div>
 
-                    <!-- Gráfica Edades -->
                     <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
                         <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Distribución por Edad</h3>
                         <div class="h-[200px] w-full relative">
@@ -127,7 +127,6 @@
                         </div>
                     </div>
 
-                    <!-- Gráfica Género -->
                     <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
                         <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Brecha de Género</h3>
                         <div class="h-[200px] w-full relative">
@@ -138,32 +137,67 @@
             </div>
         </section>
 
-        <!-- Sección Agente IA (Mantenida igual) -->
         <section id="agente" class="scroll-mt-24">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-                <div data-aos="fade-right">
-                    <h2 class="text-3xl md:text-5xl font-bold mb-8 uppercase">NÚCLEO DE <span class="text-blue-500">PREDICCIÓN</span></h2>
-                    <div class="space-y-6">
-                        <button onclick="simularPrediccion()" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-2xl font-bold text-lg transition-all shadow-[0_0_30px_rgba(59,130,246,0.3)]">
-                            INICIALIZAR MODELO
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                
+                <div data-aos="fade-right" class="glass-card p-8 rounded-3xl border border-blue-500/30">
+                    <h2 class="text-3xl font-bold mb-2 uppercase">ORIENTADOR <span class="text-blue-500">LABORAL IA</span></h2>
+                    <p class="text-gray-400 text-sm mb-8">Rellena tu perfil para descubrir en qué zona geográfica tienes mayor probabilidad de ser contratado el próximo mes.</p>
+                    
+                    <div class="space-y-5">
+                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">1. Sector Profesional</label>
+                            <select id="user-sector" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
+                                <option value="SERVICIOS" class="bg-black">Sector Servicios y Comercio</option>
+                                <option value="INDUSTRIA" class="bg-black">Industria Manufacturera</option>
+                                <option value="CONSTRUCCION" class="bg-black">Construcción y Obras</option>
+                                <option value="AGRICULTURA" class="bg-black">Agricultura</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">2. Género</label>
+                            <select id="user-genero" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
+                                <option value="HOMBRE" class="bg-black">Hombre</option>
+                                <option value="MUJER" class="bg-black">Mujer</option>
+                            </select>
+                        </div>
+
+                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">3. Rango de Edad</label>
+                            <select id="user-edad" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
+                                <option value="<25" class="bg-black">Menor de 25 años</option>
+                                <option value="25-44" class="bg-black">Entre 25 y 44 años</option>
+                                <option value=">44" class="bg-black">Mayor de 44 años</option>
+                            </select>
+                        </div>
+
+                        <button onclick="ejecutarOrientador()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 mt-4 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]">
+                            DESCUBRIR MI ZONA IDEAL
                         </button>
                     </div>
                 </div>
-                <div class="bg-black border border-white/10 rounded-2xl p-6 font-mono text-sm h-[250px] overflow-hidden relative shadow-2xl" data-aos="fade-left">
-                    <div class="flex space-x-2 mb-4 border-b border-white/5 pb-2">
+                
+                <div class="bg-black border border-white/10 rounded-3xl p-6 font-mono text-sm h-full min-h-[350px] flex flex-col shadow-2xl relative" data-aos="fade-left">
+                    <div class="flex space-x-2 mb-6 border-b border-white/5 pb-4">
                         <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="text-gray-600 ml-4">Terminal_IA_v2.0</span>
+                        <span class="text-gray-600 ml-4 font-bold tracking-widest">LaborIA_Matcher_v3.0</span>
                     </div>
-                    <div id="console-output" class="space-y-2 text-green-400"><p>> Esperando ejecución...</p></div>
+                    
+                    <div id="terminal-output" class="space-y-3 text-blue-300 flex-1 overflow-y-auto pr-2">
+                        <p class="text-gray-500">> Sistema en espera. Completa tu perfil y lanza el análisis.</p>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
     <script>
+        // Inicializar animaciones visuales
         AOS.init({ duration: 1000, once: true });
         lucide.createIcons();
 
+        // Efecto Máquina de escribir
         const text = "ANALIZANDO EL MERCADO";
         let i = 0;
         function typeWriter() {
@@ -171,20 +205,13 @@
         }
         typeWriter();
 
-        // Variables para destruir gráficas si recargamos
         let charts = {};
-
-        // Paletas de colores Cyberpunk
-        const colors = {
-            blue: 'rgba(59, 130, 246, 0.8)',
-            cyan: 'rgba(6, 182, 212, 0.8)',
-            purple: 'rgba(139, 92, 246, 0.8)',
-            pink: 'rgba(236, 72, 153, 0.8)'
-        };
+        const colors = { blue: 'rgba(59, 130, 246, 0.8)', cyan: 'rgba(6, 182, 212, 0.8)', purple: 'rgba(139, 92, 246, 0.8)', pink: 'rgba(236, 72, 153, 0.8)' };
 
         Chart.defaults.color = '#666';
         Chart.defaults.font.family = 'Inter';
 
+        // CARGA DE DATOS DESDE NODE.JS (PUERTO 3000)
         async function cargarDatosBD() {
             const statusDiv = document.getElementById('db-status');
             try {
@@ -192,7 +219,6 @@
                 if (!response.ok) throw new Error("Error en el servidor");
                 const data = await response.json();
 
-                // Actualizar contadores
                 document.getElementById('count-contratos').setAttribute('data-target', data.contratos);
                 document.getElementById('count-precision').setAttribute('data-target', data.precision);
                 document.getElementById('count-municipios').setAttribute('data-target', data.municipios);
@@ -201,7 +227,6 @@
                 statusDiv.classList.remove('text-yellow-500', 'animate-pulse');
                 statusDiv.classList.add('text-green-500');
 
-                // Pintar todas las gráficas
                 renderLineChart('chartAnual', data.graficaAnual);
                 renderDoughnutChart('chartSector', data.graficaSector);
                 renderBarChart('chartEdad', data.graficaEdad);
@@ -209,7 +234,7 @@
 
             } catch (error) {
                 console.error("Error:", error);
-                statusDiv.innerText = "🔴 Error de conexión - Comprueba el Backend";
+                statusDiv.innerText = "🔴 Error de conexión - Comprueba el Servidor Node";
                 statusDiv.classList.add('text-red-500');
             } finally {
                 animarContadores();
@@ -233,7 +258,7 @@
             });
         }
 
-        // --- FUNCIONES DE GRÁFICOS ---
+        // FUNCIONES PARA RENDERIZAR GRÁFICAS
         function clearChart(id) { if(charts[id]) charts[id].destroy(); }
 
         function renderLineChart(id, data) {
@@ -245,8 +270,7 @@
                     datasets: [{
                         label: 'Contratos Anuales',
                         data: data.datos,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)',
                         fill: true, tension: 0.4, pointRadius: 3
                     }]
                 },
@@ -260,11 +284,7 @@
                 type: 'doughnut',
                 data: {
                     labels: data.labels,
-                    datasets: [{
-                        data: data.datos,
-                        backgroundColor: [colors.blue, colors.cyan, colors.purple, colors.pink, '#475569'],
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: data.datos, backgroundColor: [colors.blue, colors.cyan, colors.purple, colors.pink, '#475569'], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
@@ -276,12 +296,7 @@
                 type: 'bar',
                 data: {
                     labels: data.labels,
-                    datasets: [{
-                        label: 'Contratos por Edad',
-                        data: data.datos,
-                        backgroundColor: colors.cyan,
-                        borderRadius: 4
-                    }]
+                    datasets: [{ label: 'Contratos por Edad', data: data.datos, backgroundColor: colors.cyan, borderRadius: 4 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
             });
@@ -293,24 +308,61 @@
                 type: 'pie',
                 data: {
                     labels: data.labels,
-                    datasets: [{
-                        data: data.datos,
-                        backgroundColor: [colors.pink, colors.blue, colors.purple],
-                        borderWidth: 0
-                    }]
+                    datasets: [{ data: data.datos, backgroundColor: [colors.pink, colors.blue, colors.purple], borderWidth: 0 }]
                 },
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', boxWidth: 12 } } } }
             });
         }
 
-        function simularPrediccion() {
-            const out = document.getElementById('console-output');
-            out.innerHTML = "";
-            ["> Ingestando datos...", "> Limpiando outliers...", "> Entrenando Random Forest...", "> Predicción: Demanda en el sector Servicios +14%"].forEach((log, i) => {
-                setTimeout(() => out.innerHTML += `<p class="animate-pulse">${log}</p>`, i * 700);
-            });
+        // PETICIÓN REAL AL MODELO MACHINE LEARNING EN PYTHON (PUERTO 5000)
+        async function ejecutarOrientador() {
+            const terminal = document.getElementById('terminal-output');
+            const sector = document.getElementById('user-sector').value;
+            const genero = document.getElementById('user-genero').value;
+            const edad = document.getElementById('user-edad').value;
+            
+            terminal.innerHTML = "";
+            
+            const rutinas = [
+                "> Compilando perfil sociolaboral del usuario...",
+                `> Perfil: ${genero} | Edad: ${edad} | Sector: ${sector}`,
+                "> Cruzando datos con histórico de 22M de contratos...",
+                "> Ejecutando IA de predicción geográfica...",
+                "> Localizando municipio óptimo (Micro-segmentación)..."
+            ];
+            
+            for (let i = 0; i < rutinas.length; i++) {
+                setTimeout(() => terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`, i * 800);
+            }
+
+            setTimeout(async () => {
+                try {
+                    // Pedimos inferencia al microservicio Python
+                    const respuesta = await fetch('http://localhost:5000/predecir', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ mes: 8, sector: sector, genero: genero, edad: edad })
+                    });
+
+                    const data = await respuesta.json();
+
+                    if (data.status === "success") {
+                        terminal.innerHTML += `
+                            <div class="mt-6 p-4 border border-green-500/30 bg-green-500/10 rounded-lg animate-pulse">
+                                <p class="text-green-400 font-bold mb-2">✅ ANÁLISIS COMPLETADO</p>
+                                <p class="text-white text-base leading-relaxed">${data.mensaje}</p>
+                            </div>
+                        `;
+                    } else {
+                        terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR DEL AGENTE: ${data.mensaje}</p>`;
+                    }
+                } catch (error) {
+                    terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: API de Inteligencia Artificial (Puerto 5000) fuera de línea.</p>`;
+                }
+            }, rutinas.length * 800);
         }
 
+        // Cargar datos al iniciar la página
         window.addEventListener('DOMContentLoaded', cargarDatosBD);
     </script>
 </body>
