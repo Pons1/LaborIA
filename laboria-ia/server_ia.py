@@ -42,7 +42,8 @@ def orientar_usuario():
         mejor_provincia = max(predicciones, key=lambda x: x['contratos'])
 
         # 3. BIG DATA: Buscamos el municipio exacto más favorable históricamente
-        client = MongoClient('mongodb://localhost:27017/')
+        # Cambia esto dentro de la función en server_ia.py
+        client = MongoClient('mongodb://127.0.0.1:27017/')
         db = client['labor_ia']
         collection = db['contratos']
         
@@ -76,4 +77,4 @@ def orientar_usuario():
         return jsonify({"status": "error", "mensaje": str(e)}), 400
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
