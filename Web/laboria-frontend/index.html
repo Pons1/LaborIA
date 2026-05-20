@@ -227,7 +227,7 @@
         async function cargarDatosBD() {
             const statusDiv = document.getElementById('db-status');
             try {
-                const response = await fetch('http://15.217.224.13:3000/api/stats');
+                const response = await fetch('https://laboria-valencia.duckdns.org/api/stats');
                 if (!response.ok) throw new Error("Error en el servidor");
                 const data = await response.json();
 
@@ -434,7 +434,7 @@
 
             setTimeout(async () => {
                 try {
-                    const respuesta = await fetch('http://15.217.224.13:5000/predecir', {
+                   const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ mes: 8, sector: sector, genero: genero, edad: edad })
