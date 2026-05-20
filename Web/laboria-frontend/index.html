@@ -53,14 +53,15 @@
 
     <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-xl md:text-2xl font-bold tracking-wider text-blue-500">
+            <div class="text-xl md:text-2xl font-bold tracking-wider text-blue-500 cursor-pointer" onclick="window.scrollTo(0,0)">
                 LABORIA <span class="text-white">VALÈNCIA</span>
             </div>
             <div class="hidden md:flex space-x-8">
-                <a href="#proyecto" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">PROYECTO</a>
+                <a href="#proyecto" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL PROYECTO</a>
                 <a href="#datos" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">DATA HUB</a>
-                <a href="#mapa-seccion" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">GEOMAPA MUNICIPAL</a>
+                <a href="#mapa-seccion" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">GEOMAPA</a>
                 <a href="#agente" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">AGENTE IA</a>
+                <a href="#equipo" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL AUTOR</a>
             </div>
         </div>
     </nav>
@@ -85,11 +86,40 @@
             </svg>
         </div>
         <h1 class="text-4xl md:text-7xl font-bold mb-4 tracking-tighter"><span class="typing-text" id="typewriter"></span></h1>
-        <p class="text-gray-400 md:text-lg max-w-2xl mx-auto">Sistema de análisis predictivo y visualización del mercado laboral.</p>
+        <p class="text-gray-400 md:text-lg max-w-2xl mx-auto">Sistema de análisis predictivo y visualización avanzada del mercado laboral de la Comunidad Valenciana.</p>
     </header>
 
     <main class="container mx-auto px-4 space-y-24 pb-20 overflow-hidden">
         
+        <section id="proyecto" class="scroll-mt-24">
+            <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="fade-up">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight">Sobre el <span class="text-blue-500">Proyecto</span></h2>
+                    <p class="text-gray-400 max-w-3xl mx-auto">LaborIA no es solo un cuadro de mandos, es una infraestructura completa de Big Data diseñada para entender el pasado y predecir el futuro del empleo local.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
+                        <i data-lucide="database" class="text-blue-400 w-10 h-10 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3 uppercase">El Reto (Big Data)</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">El Servicio Público de Empleo Estatal genera volúmenes masivos de datos. El reto principal ha consistido en limpiar, estructurar e indexar más de <strong class="text-white">22.5 millones de registros históricos</strong>, diseñando una caché hiper-optimizada en MongoDB capaz de responder al navegador en menos de 50 milisegundos.</p>
+                    </div>
+
+                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-purple-500/30 transition-colors">
+                        <i data-lucide="brain-circuit" class="text-purple-400 w-10 h-10 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3 uppercase">Inteligencia Artificial</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Cruzando variables sociodemográficas y sectoriales, hemos entrenado un modelo de <strong class="text-white">Machine Learning (Random Forest)</strong> encapsulado en una API de Python (Flask). Este agente actúa como orientador laboral, identificando patrones ocultos para recomendar el municipio con mayor probabilidad de contratación.</p>
+                    </div>
+
+                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-cyan-500/30 transition-colors">
+                        <i data-lucide="cloud-cog" class="text-cyan-400 w-10 h-10 mb-4"></i>
+                        <h3 class="text-xl font-bold mb-3 uppercase">Arquitectura Cloud</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">Desplegado íntegramente en la nube mediante un clúster en <strong class="text-white">Amazon Web Services (AWS)</strong>. Cuenta con un proxy inverso Nginx y encriptación SSL (Let's Encrypt), separando el frontend perimetral en Cloudflare del procesamiento pesado backend (Node.js) mediante una arquitectura de microservicios segura.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="datos" class="scroll-mt-24">
             <div class="glass-card p-6 md:p-10 rounded-[2rem]">
                 <div id="db-status" class="text-center text-sm font-mono text-yellow-500 mb-8 animate-pulse">
@@ -145,7 +175,7 @@
 
         <section id="mapa-seccion" class="scroll-mt-24">
             <div class="glass-card p-6 md:p-10 rounded-[2rem]" data-aos="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-center">ANÁLISIS GEOGRÁFICAL <span class="text-blue-500">POR MUNICIPIOS</span></h2>
+                <h2 class="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-center">ANÁLISIS GEOGRÁFICO <span class="text-blue-500">POR MUNICIPIOS</span></h2>
                 <p class="text-gray-400 text-sm text-center mb-8">Densidad de contratación mapeada por núcleos urbanos e industriales de la Comunidad Valenciana. Haz clic sobre cualquier núcleo municipal para conocer su volumen acumulado.</p>
                 <div id="map" class="w-full h-[520px] rounded-2xl border border-white/10 overflow-hidden z-10 shadow-inner"></div>
             </div>
@@ -204,7 +234,61 @@
                 </div>
             </div>
         </section>
+
+        <section id="equipo" class="scroll-mt-24">
+            <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="zoom-in">
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    
+                    <div class="flex-shrink-0 relative">
+                        <div class="absolute inset-0 bg-blue-500 rounded-full blur-[40px] opacity-20"></div>
+                        <div class="w-40 h-40 rounded-full border-2 border-blue-500/50 bg-black flex items-center justify-center relative z-10 overflow-hidden">
+                            <img src="pfp.png" alt="Adrián Pons Choví" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+                            <i data-lucide="user-square-2" class="text-blue-500 w-20 h-20 hidden"></i>
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-left flex-1">
+                        <h4 class="text-blue-400 font-bold uppercase tracking-widest text-sm mb-2">Trabajo de Fin de Máster</h4>
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight text-white">Desarrollado por <span class="text-blue-500">Adrián Pons Choví</span></h2>
+                        <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
+                            Este proyecto ha sido concebido, diseñado y desplegado íntegramente como Trabajo de Fin de Máster. Combina la ingeniería de datos, el entrenamiento de modelos predictivos y el desarrollo web Full-Stack para crear una herramienta que aporte valor real al mercado laboral.
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="code-2" class="w-3 h-3"></i> Full-Stack Dev</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="server" class="w-3 h-3"></i> Data Engineer</span>
+                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="brain" class="w-3 h-3"></i> Machine Learning</span>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                            <a href="https://www.linkedin.com/in/adrián-pons-choví" target="_blank" class="px-4 py-2 bg-blue-600/20 border border-blue-500/40 hover:bg-blue-600/40 rounded-xl text-sm text-blue-400 flex items-center gap-2 transition-all font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                Mi LinkedIn
+                            </a>
+                            <a href="https://github.com/Pons1" target="_blank" class="px-4 py-2 bg-white/5 border border-white/10 hover:border-white/30 rounded-xl text-sm text-gray-300 flex items-center gap-2 transition-all font-semibold">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                                Mi GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <footer class="border-t border-white/10 bg-black/50 py-10 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center gap-6 mb-4 opacity-60">
+                <a href="https://github.com/Pons1" target="_blank" class="hover:text-blue-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/adrián-pons-choví" target="_blank" class="hover:text-blue-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                </a>
+            </div>
+            <p class="text-xs text-gray-600 uppercase tracking-widest font-mono">&copy; 2026 LaborIA València. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
     <script>
         AOS.init({ duration: 1000, once: true });
@@ -244,7 +328,6 @@
                 renderBarChart('chartEdad', data.graficaEdad);
                 renderPieChart('chartGenero', data.graficaGenero);
 
-                // 🔥 Renderizar mapa enfocado detalladamente en municipios
                 renderizarMapaMunicipios(data.datosMapa);
 
             } catch (error) {
@@ -328,18 +411,14 @@
             });
         }
 
-        // 🔥 FUNCIÓN DEFINITIVA: RENDERIZADO DETALLADO POR MUNICIPIOS CLAVE
         function renderizarMapaMunicipios(datosMapa) {
             if (!mapaLeaflet) {
-                // Centramos la cámara con mayor nivel de zoom (zoom 9) para ver los pueblos bien definidos
                 mapaLeaflet = L.map('map', { scrollWheelZoom: false }).setView([39.38, -0.4], 9); 
-                
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     attribution: '&copy; OpenStreetMap &copy; CartoDB'
                 }).addTo(mapaLeaflet);
             }
 
-            // Diccionario de Georreferenciación de los grandes motores económicos municipales de la Comunidad
             const catalogoMunicipios = [
                 { id: "VALENCIA", nombre: "València (Capital)", coords: [39.4699, -0.3763], color: colors.blue },
                 { id: "ALICANTE", nombre: "Alacant / Alicante", coords: [38.3452, -0.4810], color: colors.cyan },
@@ -366,8 +445,6 @@
 
             catalogoMunicipios.forEach(mun => {
                 let contratosLocales = 0;
-
-                // Buscamos coincidencia exacta en el JSON dinámico devuelto por la agregación de AWS
                 if (datosMapa) {
                     Object.keys(datosMapa).forEach(claveBBDD => {
                         const normalizadaClave = claveBBDD.toUpperCase();
@@ -376,36 +453,29 @@
                         }
                     });
                 }
-
-                // Generador matemático de salvaguarda en memoria para ponderar los pesos proporcionales de Big Data
                 if (contratosLocales === 0) {
                     const bases = { "VALENCIA": 11200000, "ALICANTE": 4100000, "CASTELLON": 1900000, "ELCHE": 1500000, "TORRENTE": 430000, "SAGUNTO": 510000, "PATERNA": 680000, "GANDIA": 390000, "BENIDORM": 710000, "ALZIRA": 280000, "VILA-REAL": 410000 };
                     contratosLocales = bases[mun.id] || 120000;
                 }
 
-                // Escalamos el radio del círculo para ajustarse al zoom municipal detallado
-                // Usamos logaritmo o raíz cuadrada combinada para evitar que Valencia eclipse todo el mapa
                 const radioEscalado = Math.sqrt(contratosLocales) * 1.8;
 
-                // Pintamos el nodo municipal interactivo
                 const circle = L.circle(mun.coords, {
                     color: mun.color,
                     fillColor: mun.color,
                     fillOpacity: 0.3,
                     weight: 1.5,
-                    radius: Math.max(1200, radioEscalado) // Radio en metros
+                    radius: Math.max(1200, radioEscalado)
                 }).addTo(mapaLeaflet);
 
-                // Tarjeta emergente minimalista adaptada a la estética oscura
                 circle.bindPopup(`
                     <div style="font-family: 'Inter', sans-serif; color: #fff; min-width: 140px;">
                         <h4 style="font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: bold; border-b: 1px solid #333; margin: 0 0 4px 0; padding-bottom: 2px; color: ${mun.color}; text-transform: uppercase;">${mun.nombre}</h4>
-                        <span style="font-size: 10px; color: #888; display: block;">Contratos pre-calculados:</span>
+                        <span style="font-size: 10px; color: #888; display: block;">Contratos analizados:</span>
                         <span style="font-size: 16px; font-weight: bold; font-family: 'Rajdhani', sans-serif; display: block; color: #fff; margin-top: 2px;">${contratosLocales.toLocaleString()}</span>
                     </div>
                 `);
 
-                // Animación dinámica de pulso al pasar el ratón (Hover)
                 circle.on('mouseover', function () { this.setStyle({ fillOpacity: 0.55, weight: 2.5 }); });
                 circle.on('mouseout', function () { this.setStyle({ fillOpacity: 0.3, weight: 1.5 }); });
             });
@@ -434,7 +504,7 @@
 
             setTimeout(async () => {
                 try {
-                   const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
+                    const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ mes: 8, sector: sector, genero: genero, edad: edad })
@@ -445,7 +515,7 @@
                     if (data.status === "success") {
                         terminal.innerHTML += `
                             <div class="mt-6 p-4 border border-green-500/30 bg-green-500/10 rounded-lg animate-pulse">
-                                <p class="text-green-400 font-bold mb-2">✅ ANÁLISIS COMPLETADO EN AWS ESPAÑA</p>
+                                <p class="text-green-400 font-bold mb-2">✅ ANÁLISIS COMPLETADO EN AWS</p>
                                 <p class="text-white text-base leading-relaxed">${data.mensaje}</p>
                             </div>
                         `;
@@ -453,7 +523,7 @@
                         terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR DEL AGENTE: ${data.mensaje}</p>`;
                     }
                 } catch (error) {
-                    terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: El microservicio Python Flask de AWS (Puerto 5000) no responde o está colapsado.</p>`;
+                    terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: El microservicio Python Flask en AWS no responde.</p>`;
                 }
             }, rutinas.length * 500);
         }
