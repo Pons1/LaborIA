@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>LaborIA València | Dynamic IA Platform</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,7 +20,7 @@
         html, body { overflow-x: hidden; width: 100%; position: relative; }
         body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; scroll-behavior: smooth; }
         h1, h2, h3, .nav-link { font-family: 'Rajdhani', sans-serif; }
-        
+
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(12px);
@@ -38,7 +38,7 @@
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
         canvas { max-width: 100% !important; }
-        
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
@@ -90,14 +90,14 @@
     </header>
 
     <main class="container mx-auto px-4 space-y-24 pb-20 overflow-hidden">
-        
+
         <section id="proyecto" class="scroll-mt-24">
             <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="fade-up">
                 <div class="text-center mb-10">
                     <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight">Sobre el <span class="text-blue-500">Proyecto</span></h2>
                     <p class="text-gray-400 max-w-3xl mx-auto">LaborIA no es solo un cuadro de mandos, es una infraestructura completa de Big Data diseñada para entender el pasado y predecir el futuro del empleo local.</p>
                 </div>
-                
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
                         <i data-lucide="database" class="text-blue-400 w-10 h-10 mb-4"></i>
@@ -140,7 +140,7 @@
                         <div id="count-municipios" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
                     </div>
                 </div>
-                
+
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-3 bg-black/40 rounded-2xl p-4 border border-white/5">
                         <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Evolución Histórica</h3>
@@ -183,51 +183,62 @@
 
         <section id="agente" class="scroll-mt-24">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-                
+
                 <div data-aos="fade-right" class="glass-card p-8 rounded-3xl border border-blue-500/30">
                     <h2 class="text-3xl font-bold mb-2 uppercase">ORIENTADOR <span class="text-blue-500">LABORAL IA</span></h2>
-                    <p class="text-gray-400 text-sm mb-8">Rellena tu perfil para descubrir en qué zona geográfica tienes mayor probabilidad de ser contratado el próximo mes.</p>
-                    
-                    <div class="space-y-5">
-                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">1. Sector Profesional</label>
-                            <select id="user-sector" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
-                                <option value="SERVICIOS" class="bg-black">Sector Servicios y Comercio</option>
-                                <option value="INDUSTRIA" class="bg-black">Industria Manufacturera</option>
-                                <option value="CONSTRUCCION" class="bg-black">Construcción y Obras</option>
-                                <option value="AGRICULTURA" class="bg-black">Agricultura</option>
-                            </select>
+                    <p class="text-gray-400 text-sm mb-6">Completa tu perfil sociodemográfico para descubrir tus probabilidades de contratación el próximo mes en tu provincia.</p>
+
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/10 md:col-span-2">
+                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Sector Objetivo</label>
+                                <select id="user-sector" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
+                                    <option value="SERVICIOS" class="bg-black">Servicios / Comercio / Hostelería</option>
+                                    <option value="INDUSTRIA" class="bg-black">Industria Manufacturera / Textil</option>
+                                    <option value="CONSTRUCCION" class="bg-black">Construcción e Infraestructuras</option>
+                                    <option value="AGRICULTURA" class="bg-black">Agricultura / Sector Primario</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Género</label>
+                                <select id="user-genero" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
+                                    <option value="HOMBRE" class="bg-black">Hombre</option>
+                                    <option value="MUJER" class="bg-black">Mujer</option>
+                                </select>
+                            </div>
+
+                            <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Rango de Edad</label>
+                                <select id="user-edad" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
+                                    <option value="<25" class="bg-black">Menor de 25 años</option>
+                                    <option value="25-44" class="bg-black">Entre 25 y 44 años</option>
+                                    <option value=">44" class="bg-black">Mayor de 44 años</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">2. Género</label>
-                            <select id="user-genero" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
-                                <option value="HOMBRE" class="bg-black">Hombre</option>
-                                <option value="MUJER" class="bg-black">Mujer</option>
+                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Provincia de Análisis</label>
+                            <select id="user-provincia" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
+                                <option value="VALENCIA" class="bg-black">Provincia de València</option>
+                                <option value="ALICANTE" class="bg-black">Provincia de Alicante</option>
+                                <option value="CASTELLON" class="bg-black">Provincia de Castellón</option>
                             </select>
                         </div>
 
-                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">3. Rango de Edad</label>
-                            <select id="user-edad" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer">
-                                <option value="<25" class="bg-black">Menor de 25 años</option>
-                                <option value="25-44" class="bg-black">Entre 25 y 44 años</option>
-                                <option value=">44" class="bg-black">Mayor de 44 años</option>
-                            </select>
-                        </div>
-
-                        <button onclick="ejecutarOrientador()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 mt-4 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-                            DESCUBRIR MI ZONA IDEAL
+                        <button onclick="ejecutarOrientador()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 mt-2 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]">
+                            INICIAR ANÁLISIS PREDICTIVO
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="bg-black border border-white/10 rounded-3xl p-6 font-mono text-sm h-full min-h-[350px] flex flex-col shadow-2xl relative" data-aos="fade-left">
                     <div class="flex space-x-2 mb-6 border-b border-white/5 pb-4">
                         <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div>
                         <span class="text-gray-600 ml-4 font-bold tracking-widest">LaborIA_Matcher_v3.0</span>
                     </div>
-                    
+
                     <div id="terminal-output" class="space-y-3 text-blue-300 flex-1 overflow-y-auto pr-2">
                         <p class="text-gray-500">> Sistema en espera. Completa tu perfil y lanza el análisis.</p>
                     </div>
@@ -238,7 +249,6 @@
         <section id="equipo" class="scroll-mt-24">
             <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="zoom-in">
                 <div class="flex flex-col md:flex-row items-center gap-10">
-                    
                     <div class="flex-shrink-0 relative">
                         <div class="absolute inset-0 bg-blue-500 rounded-full blur-[40px] opacity-20"></div>
                         <div class="w-40 h-40 rounded-full border-2 border-blue-500/50 bg-black flex items-center justify-center relative z-10 overflow-hidden">
@@ -253,7 +263,7 @@
                         <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
                             Este proyecto ha sido concebido, diseñado y desplegado íntegramente como Trabajo de Fin de Máster. Combina la ingeniería de datos, el entrenamiento de modelos predictivos y el desarrollo web Full-Stack para crear una herramienta que aporte valor real al mercado laboral.
                         </p>
-                        
+
                         <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
                             <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="code-2" class="w-3 h-3"></i> Full-Stack Dev</span>
                             <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="server" class="w-3 h-3"></i> Data Engineer</span>
@@ -344,7 +354,7 @@
                 const target = +counter.getAttribute('data-target');
                 const updateCount = () => {
                     const count = +counter.innerText.replace(/,/g, '').replace('%', '');
-                    const inc = Math.max(1, Math.ceil(target / 40)); 
+                    const inc = Math.max(1, Math.ceil(target / 40));
                     if (count < target) {
                         counter.innerText = (count + inc).toLocaleString();
                         setTimeout(updateCount, 40);
@@ -413,7 +423,7 @@
 
         function renderizarMapaMunicipios(datosMapa) {
             if (!mapaLeaflet) {
-                mapaLeaflet = L.map('map', { scrollWheelZoom: false }).setView([39.38, -0.4], 9); 
+                mapaLeaflet = L.map('map', { scrollWheelZoom: false }).setView([39.38, -0.4], 9);
                 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
                     attribution: '&copy; OpenStreetMap &copy; CartoDB'
                 }).addTo(mapaLeaflet);
@@ -483,31 +493,43 @@
 
         async function ejecutarOrientador() {
             const terminal = document.getElementById('terminal-output');
+
+            // Extracción de variables ajustada a la base de datos y al modelo
             const sector = document.getElementById('user-sector').value;
             const genero = document.getElementById('user-genero').value;
             const edad = document.getElementById('user-edad').value;
-            
+            const provincia = document.getElementById('user-provincia').value;
+
             terminal.innerHTML = "";
-            
+
             const rutinas = [
-                "> Conectando con nodo predictivo AWS EC2...",
-                "> Compilando perfil sociolaboral del usuario...",
+                "> Estableciendo túnel de comunicación con nodo AWS EC2...",
+                "> Compilando vector de características sociodemográficas...",
                 `> Perfil validado: [${genero} | Edad: ${edad} | Sector: ${sector}]`,
-                "> Cruzando datos con histórico de 22.5M de contratos...",
-                "> Ejecutando inferencia en modelo Random Forest (.pkl)...",
-                "> Calculando micro-segmentación municipal óptima..."
+                `> Georreferenciación base: [Provincia: ${provincia}]`,
+                "> Evaluando histórico espacial de 22.5 millones de contrataciones...",
+                "> Ejecutando inferencia probabilística en modelo Random Forest...",
+                "> Consolidando predicción final..."
             ];
-            
+
             for (let i = 0; i < rutinas.length; i++) {
                 setTimeout(() => terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`, i * 500);
             }
 
             setTimeout(async () => {
                 try {
+                    // Enviamos la petición asegurando que los nombres de las claves (keys)
+                    // coincidan con lo que espera recibir tu servidor de Python
                     const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ mes: 8, sector: sector, genero: genero, edad: edad })
+                        body: JSON.stringify({
+                            mes: 8,
+                            sector: sector,
+                            genero: genero,
+                            edad: edad,
+                            provincia: provincia
+                        })
                     });
 
                     const data = await respuesta.json();
