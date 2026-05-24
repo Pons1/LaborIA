@@ -1,484 +1,743 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>LaborIA València | Dynamic IA Platform</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
-        html, body { overflow-x: hidden; width: 100%; position: relative; }
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: #e2e8f0; scroll-behavior: smooth; }
-        h1, h2, h3, .nav-link { font-family: 'Rajdhani', sans-serif; }
+      html,
+      body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #050505;
+        color: #e2e8f0;
+        scroll-behavior: smooth;
+      }
+      h1,
+      h2,
+      h3,
+      .nav-link {
+        font-family: 'Rajdhani', sans-serif;
+      }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      .glass-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .glass-card:hover {
+        border: 1px solid #3b82f6;
+        box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+      }
+
+      .bg-glow {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .typing-text::after {
+        content: '|';
+        animation: blink 1s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
         }
-        .glass-card:hover { border: 1px solid #3b82f6; box-shadow: 0 10px 30px rgba(59, 130, 246, 0.10); }
+      }
+      canvas {
+        max-width: 100% !important;
+      }
 
-        .bg-glow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 70%);
-            z-index: -1; pointer-events: none;
-        }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(59, 130, 246, 0.3);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(59, 130, 246, 0.6);
+      }
 
-        .typing-text::after { content: '|'; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-        canvas { max-width: 100% !important; }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(59, 130, 246, 0.6); }
-
-        .leaflet-popup-content-wrapper { background: rgba(10, 10, 10, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.15); color: #fff !important; border-radius: 12px !important; backdrop-filter: blur(8px); }
-        .leaflet-popup-tip { background: rgba(10, 10, 10, 0.95) !important; border: 1px solid rgba(255, 255, 255, 0.15); }
+      .leaflet-popup-content-wrapper {
+        background: rgba(10, 10, 10, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #fff !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(8px);
+      }
+      .leaflet-popup-tip {
+        background: rgba(10, 10, 10, 0.95) !important;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="bg-glow"></div>
 
     <nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-white/10">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-xl md:text-2xl font-bold tracking-wider text-blue-500 cursor-pointer" onclick="window.scrollTo(0,0)">
-                LABORIA <span class="text-white">VALÈNCIA</span>
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#proyecto" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL PROYECTO</a>
-                <a href="#datos" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">DATA HUB</a>
-                <a href="#mapa-seccion" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">GEOMAPA</a>
-                <a href="#agente" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">AGENTE IA</a>
-                <a href="#equipo" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL AUTOR</a>
-            </div>
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div
+          class="text-xl md:text-2xl font-bold tracking-wider text-blue-500 cursor-pointer"
+          onclick="window.scrollTo(0, 0)"
+        >
+          LABORIA <span class="text-white">VALÈNCIA</span>
         </div>
+        <div class="hidden md:flex space-x-8">
+          <a href="#proyecto" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL PROYECTO</a>
+          <a href="#datos" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">DATA HUB</a>
+          <a href="#mapa-seccion" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">GEOMAPA</a>
+          <a href="#agente" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">AGENTE IA</a>
+          <a href="#equipo" class="nav-link hover:text-blue-400 text-sm tracking-widest transition">EL AUTOR</a>
+        </div>
+      </div>
     </nav>
 
     <header class="container mx-auto px-4 py-20 text-center flex flex-col items-center">
-        <div data-aos="zoom-in" data-aos-duration="1200" class="mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" class="w-20 h-20 md:w-28 md:h-28 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                <defs>
-                    <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#3b82f6" />
-                        <stop offset="100%" stop-color="#06b6d4" />
-                    </linearGradient>
-                </defs>
-                <path d="M 30 20 L 30 75 L 75 75" fill="none" stroke="url(#heroGlow)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M 30 50 L 55 40 L 65 55" fill="none" stroke="#06b6d4" stroke-width="4" stroke-dasharray="4 4" opacity="0.6" />
-                <circle cx="30" cy="20" r="8" fill="#06b6d4" />
-                <circle cx="30" cy="50" r="6" fill="#ffffff" />
-                <circle cx="30" cy="75" r="10" fill="#3b82f6" />
-                <circle cx="55" cy="75" r="6" fill="#06b6d4" />
-                <circle cx="75" cy="75" r="8" fill="#3b82f6" />
-                <circle cx="55" cy="40" r="5" fill="#3b82f6" />
-            </svg>
-        </div>
-        <h1 class="text-4xl md:text-7xl font-bold mb-4 tracking-tighter"><span class="typing-text" id="typewriter"></span></h1>
-        <p class="text-gray-400 md:text-lg max-w-2xl mx-auto">Sistema de análisis predictivo y visualización avanzada del mercado laboral de la Comunidad Valenciana.</p>
+      <div data-aos="zoom-in" data-aos-duration="1200" class="mb-6">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          class="w-20 h-20 md:w-28 md:h-28 drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+        >
+          <defs>
+            <linearGradient id="heroGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#06b6d4" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M 30 20 L 30 75 L 75 75"
+            fill="none"
+            stroke="url(#heroGlow)"
+            stroke-width="12"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M 30 50 L 55 40 L 65 55"
+            fill="none"
+            stroke="#06b6d4"
+            stroke-width="4"
+            stroke-dasharray="4 4"
+            opacity="0.6"
+          />
+          <circle cx="30" cy="20" r="8" fill="#06b6d4" />
+          <circle cx="30" cy="50" r="6" fill="#ffffff" />
+          <circle cx="30" cy="75" r="10" fill="#3b82f6" />
+          <circle cx="55" cy="75" r="6" fill="#06b6d4" />
+          <circle cx="75" cy="75" r="8" fill="#3b82f6" />
+          <circle cx="55" cy="40" r="5" fill="#3b82f6" />
+        </svg>
+      </div>
+      <h1 class="text-4xl md:text-7xl font-bold mb-4 tracking-tighter">
+        <span class="typing-text" id="typewriter"></span>
+      </h1>
+      <p class="text-gray-400 md:text-lg max-w-2xl mx-auto">
+        Sistema de análisis predictivo y visualización avanzada del mercado laboral de la Comunidad Valenciana.
+      </p>
     </header>
 
     <main class="container mx-auto px-4 space-y-24 pb-20 overflow-hidden">
+      <section id="proyecto" class="scroll-mt-24">
+        <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="fade-up">
+          <div class="text-center mb-10">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight">
+              Sobre el <span class="text-blue-500">Proyecto</span>
+            </h2>
+            <p class="text-gray-400 max-w-3xl mx-auto">
+              LaborIA no es solo un cuadro de mandos, es una infraestructura completa de Big Data diseñada para entender
+              el pasado y predecir el futuro del empleo local.
+            </p>
+          </div>
 
-        <section id="proyecto" class="scroll-mt-24">
-            <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="fade-up">
-                <div class="text-center mb-10">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight">Sobre el <span class="text-blue-500">Proyecto</span></h2>
-                    <p class="text-gray-400 max-w-3xl mx-auto">LaborIA no es solo un cuadro de mandos, es una infraestructura completa de Big Data diseñada para entender el pasado y predecir el futuro del empleo local.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
-                        <i data-lucide="database" class="text-blue-400 w-10 h-10 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3 uppercase">El Reto (Big Data)</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed">El Servicio Público de Empleo Estatal genera volúmenes masivos de datos. El reto principal ha consistido en limpiar, estructurar e indexar más de <strong class="text-white">22.5 millones de registros históricos</strong>, diseñando una caché hiper-optimizada en MongoDB capaz de responder al navegador en menos de 50 milisegundos.</p>
-                    </div>
-
-                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-purple-500/30 transition-colors">
-                        <i data-lucide="brain-circuit" class="text-purple-400 w-10 h-10 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3 uppercase">Inteligencia Artificial</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed">Cruzando variables sociodemográficas y sectoriales, hemos entrenado un modelo de <strong class="text-white">Machine Learning (Random Forest)</strong> encapsulado en una API de Python (Flask). Este agente actúa como orientador laboral, identificando patrones ocultos para recomendar el municipio con mayor probabilidad de contratación.</p>
-                    </div>
-
-                    <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-cyan-500/30 transition-colors">
-                        <i data-lucide="cloud-cog" class="text-cyan-400 w-10 h-10 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-3 uppercase">Arquitectura Cloud</h3>
-                        <p class="text-sm text-gray-400 leading-relaxed">Desplegado íntegramente en la nube mediante un clúster en <strong class="text-white">Amazon Web Services (AWS)</strong>. Cuenta con un proxy inverso Nginx y encriptación SSL (Let's Encrypt), separando el frontend perimetral en Cloudflare del procesamiento pesado backend (Node.js) mediante una arquitectura de microservicios segura.</p>
-                    </div>
-                </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-blue-500/30 transition-colors">
+              <i data-lucide="database" class="text-blue-400 w-10 h-10 mb-4"></i>
+              <h3 class="text-xl font-bold mb-3 uppercase">El Reto (Big Data)</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                El Servicio Público de Empleo Estatal genera volúmenes masivos de datos. El reto principal ha consistido
+                en limpiar, estructurar e indexar más de
+                <strong class="text-white">22.5 millones de registros históricos</strong>, diseñando una caché
+                hiper-optimizada en MongoDB capaz de responder al navegador en menos de 50 milisegundos.
+              </p>
             </div>
-        </section>
 
-        <section id="datos" class="scroll-mt-24">
-            <div class="glass-card p-6 md:p-10 rounded-[2rem]">
-                <div id="db-status" class="text-center text-sm font-mono text-yellow-500 mb-8 animate-pulse">
-                    Conectando con AWS EC2 Cloud Cluster...
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
-                    <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Volumen de Contratos</h4>
-                        <div id="count-contratos" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Precisión Predictiva</h4>
-                        <div id="count-precision" class="text-4xl font-bold text-white counter" data-target="0">0</div>
-                    </div>
-                    <div>
-                        <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Municipios Mapeados</h4>
-                        <div id="count-municipios" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="lg:col-span-3 bg-black/40 rounded-2xl p-4 border border-white/5">
-                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Evolución Histórica</h3>
-                        <div class="h-[250px] md:h-[350px]">
-                            <canvas id="chartAnual"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
-                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Impacto por Sector</h3>
-                        <div class="h-[200px] w-full relative">
-                            <canvas id="chartSector"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
-                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Distribución por Edad</h3>
-                        <div class="h-[200px] w-full relative">
-                            <canvas id="chartEdad"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
-                        <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Brecha de Género</h3>
-                        <div class="h-[200px] w-full relative">
-                            <canvas id="chartGenero"></canvas>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-purple-500/30 transition-colors">
+              <i data-lucide="brain-circuit" class="text-purple-400 w-10 h-10 mb-4"></i>
+              <h3 class="text-xl font-bold mb-3 uppercase">Inteligencia Artificial</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Cruzando variables sociodemográficas y sectoriales, hemos entrenado un modelo de
+                <strong class="text-white">Machine Learning (Random Forest)</strong> encapsulado en una API de Python
+                (Flask). Este agente actúa como orientador laboral, identificando patrones ocultos para recomendar el
+                municipio con mayor probabilidad de contratación.
+              </p>
             </div>
-        </section>
 
-        <section id="mapa-seccion" class="scroll-mt-24">
-            <div class="glass-card p-6 md:p-10 rounded-[2rem]" data-aos="fade-up">
-                <h2 class="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-center">ANÁLISIS GEOGRÁFICO <span class="text-blue-500">POR MUNICIPIOS</span></h2>
-                <p class="text-gray-400 text-sm text-center mb-8">Densidad de contratación mapeada por núcleos urbanos e industriales de la Comunidad Valenciana. Haz clic sobre cualquier núcleo municipal para conocer su volumen acumulado.</p>
-                <div id="map" class="w-full h-[520px] rounded-2xl border border-white/10 overflow-hidden z-10 shadow-inner"></div>
+            <div class="bg-black/40 border border-white/5 p-6 rounded-2xl hover:border-cyan-500/30 transition-colors">
+              <i data-lucide="cloud-cog" class="text-cyan-400 w-10 h-10 mb-4"></i>
+              <h3 class="text-xl font-bold mb-3 uppercase">Arquitectura Cloud</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">
+                Desplegado íntegramente en la nube mediante un clúster en
+                <strong class="text-white">Amazon Web Services (AWS)</strong>. Cuenta con un proxy inverso Nginx y
+                encriptación SSL (Let's Encrypt), separando el frontend perimetral en Cloudflare del procesamiento
+                pesado backend (Node.js) mediante una arquitectura de microservicios segura.
+              </p>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <section id="agente" class="scroll-mt-24">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+      <section id="datos" class="scroll-mt-24">
+        <div class="glass-card p-6 md:p-10 rounded-[2rem]">
+          <div id="db-status" class="text-center text-sm font-mono text-yellow-500 mb-8 animate-pulse">
+            Conectando con AWS EC2 Cloud Cluster...
+          </div>
 
-                <div data-aos="fade-right" class="glass-card p-8 rounded-3xl border border-blue-500/30">
-                    <h2 class="text-3xl font-bold mb-2 uppercase">ORIENTADOR <span class="text-blue-500">LABORAL IA</span></h2>
-                    <p class="text-gray-400 text-sm mb-6">Completa tu perfil sociodemográfico para descubrir tus probabilidades de contratación el próximo mes en tu provincia.</p>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-12">
+            <div>
+              <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Volumen de Contratos</h4>
+              <div id="count-contratos" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
+            </div>
+            <div>
+              <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Precisión Predictiva</h4>
+              <div id="count-precision" class="text-4xl font-bold text-white counter" data-target="0">0</div>
+            </div>
+            <div>
+              <h4 class="text-gray-500 text-xs uppercase tracking-widest mb-1">Municipios Mapeados</h4>
+              <div id="count-municipios" class="text-4xl font-bold text-blue-500 counter" data-target="0">0</div>
+            </div>
+          </div>
 
-                    <div class="space-y-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="bg-black/50 p-3 rounded-xl border border-white/10 md:col-span-2">
-                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Sector Objetivo</label>
-                                <select id="user-sector" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
-                                    <option value="SERVICIOS" class="bg-black">Servicios / Comercio / Hostelería</option>
-                                    <option value="INDUSTRIA" class="bg-black">Industria Manufacturera / Textil</option>
-                                    <option value="CONSTRUCCION" class="bg-black">Construcción e Infraestructuras</option>
-                                    <option value="AGRICULTURA" class="bg-black">Agricultura / Sector Primario</option>
-                                </select>
-                            </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-3 bg-black/40 rounded-2xl p-4 border border-white/5">
+              <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Evolución Histórica</h3>
+              <div class="h-[250px] md:h-[350px]">
+                <canvas id="chartAnual"></canvas>
+              </div>
+            </div>
 
-                            <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Género</label>
-                                <select id="user-genero" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
-                                    <option value="HOMBRE" class="bg-black">Hombre</option>
-                                    <option value="MUJER" class="bg-black">Mujer</option>
-                                </select>
-                            </div>
+            <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+              <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Impacto por Sector</h3>
+              <div class="h-[200px] w-full relative">
+                <canvas id="chartSector"></canvas>
+              </div>
+            </div>
 
-                            <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Rango de Edad</label>
-                                <select id="user-edad" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
-                                    <option value="<25" class="bg-black">Menor de 25 años</option>
-                                    <option value="25-44" class="bg-black">Entre 25 y 44 años</option>
-                                    <option value=">44" class="bg-black">Mayor de 44 años</option>
-                                </select>
-                            </div>
-                        </div>
+            <div class="bg-black/40 rounded-2xl p-4 border border-white/5">
+              <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Distribución por Edad</h3>
+              <div class="h-[200px] w-full relative">
+                <canvas id="chartEdad"></canvas>
+              </div>
+            </div>
 
-                        <div class="bg-black/50 p-3 rounded-xl border border-white/10">
-                            <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Provincia de Análisis</label>
-                            <select id="user-provincia" class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm">
-                                <option value="VALENCIA" class="bg-black">Provincia de València</option>
-                                <option value="ALICANTE" class="bg-black">Provincia de Alicante</option>
-                                <option value="CASTELLON" class="bg-black">Provincia de Castellón</option>
-                            </select>
-                        </div>
+            <div class="bg-black/40 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+              <h3 class="text-center text-sm text-gray-400 mb-2 uppercase tracking-widest">Brecha de Género</h3>
+              <div class="h-[200px] w-full relative">
+                <canvas id="chartGenero"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-                        <button onclick="ejecutarOrientador()" class="w-full bg-blue-600 hover:bg-blue-500 py-4 mt-2 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]">
-                            INICIAR ANÁLISIS PREDICTIVO
-                        </button>
-                    </div>
+      <section id="mapa-seccion" class="scroll-mt-24">
+        <div class="glass-card p-6 md:p-10 rounded-[2rem]" data-aos="fade-up">
+          <h2 class="text-2xl md:text-3xl font-bold mb-2 uppercase tracking-tight text-center">
+            ANÁLISIS GEOGRÁFICO <span class="text-blue-500">POR MUNICIPIOS</span>
+          </h2>
+          <p class="text-gray-400 text-sm text-center mb-8">
+            Densidad de contratación mapeada por núcleos urbanos e industriales de la Comunidad Valenciana. Haz clic
+            sobre cualquier núcleo municipal para conocer su volumen acumulado.
+          </p>
+          <div
+            id="map"
+            class="w-full h-[520px] rounded-2xl border border-white/10 overflow-hidden z-10 shadow-inner"
+          ></div>
+        </div>
+      </section>
+
+      <section id="agente" class="scroll-mt-24">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+          <div data-aos="fade-right" class="glass-card p-8 rounded-3xl border border-blue-500/30">
+            <h2 class="text-3xl font-bold mb-2 uppercase">ORIENTADOR <span class="text-blue-500">LABORAL IA</span></h2>
+            <p class="text-gray-400 text-sm mb-6">
+              Completa tu perfil sociodemográfico para descubrir tus probabilidades de contratación el próximo mes en tu
+              provincia.
+            </p>
+
+            <div class="space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-black/50 p-3 rounded-xl border border-white/10 md:col-span-2">
+                  <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2"
+                    >Sector Objetivo</label
+                  >
+                  <select
+                    id="user-sector"
+                    class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm"
+                  >
+                    <option value="SERVICIOS" class="bg-black">Servicios / Comercio / Hostelería</option>
+                    <option value="INDUSTRIA" class="bg-black">Industria Manufacturera / Textil</option>
+                    <option value="CONSTRUCCION" class="bg-black">Construcción e Infraestructuras</option>
+                    <option value="AGRICULTURA" class="bg-black">Agricultura / Sector Primario</option>
+                  </select>
                 </div>
 
-                <div class="bg-black border border-white/10 rounded-3xl p-6 font-mono text-sm h-full min-h-[350px] flex flex-col shadow-2xl relative" data-aos="fade-left">
-                    <div class="flex space-x-2 mb-6 border-b border-white/5 pb-4">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <span class="text-gray-600 ml-4 font-bold tracking-widest">LaborIA_Matcher_v3.0</span>
-                    </div>
-
-                    <div id="terminal-output" class="space-y-3 text-blue-300 flex-1 overflow-y-auto pr-2">
-                        <p class="text-gray-500">> Sistema en espera. Completa tu perfil y lanza el análisis.</p>
-                    </div>
+                <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                  <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2">Género</label>
+                  <select
+                    id="user-genero"
+                    class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm"
+                  >
+                    <option value="HOMBRE" class="bg-black">Hombre</option>
+                    <option value="MUJER" class="bg-black">Mujer</option>
+                  </select>
                 </div>
-            </div>
-        </section>
 
-        <section id="equipo" class="scroll-mt-24">
-            <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="zoom-in">
-                <div class="flex flex-col md:flex-row items-center gap-10">
-                    <div class="flex-shrink-0 relative">
-                        <div class="absolute inset-0 bg-blue-500 rounded-full blur-[40px] opacity-20"></div>
-                        <div class="w-40 h-40 rounded-full border-2 border-blue-500/50 bg-black flex items-center justify-center relative z-10 overflow-hidden">
-                            <img src="pfp.png" alt="Adrián Pons Choví" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
-                            <i data-lucide="user-square-2" class="text-blue-500 w-20 h-20 hidden"></i>
-                        </div>
-                    </div>
-
-                    <div class="text-center md:text-left flex-1">
-                        <h4 class="text-blue-400 font-bold uppercase tracking-widest text-sm mb-2">Trabajo de Fin de Máster</h4>
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight text-white">Desarrollado por <span class="text-blue-500">Adrián Pons Choví</span></h2>
-                        <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
-                            Este proyecto ha sido concebido, diseñado y desplegado íntegramente como Trabajo de Fin de Máster. Combina la ingeniería de datos, el entrenamiento de modelos predictivos y el desarrollo web Full-Stack para crear una herramienta que aporte valor real al mercado laboral.
-                        </p>
-
-                        <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
-                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="code-2" class="w-3 h-3"></i> Full-Stack Dev</span>
-                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="server" class="w-3 h-3"></i> Data Engineer</span>
-                            <span class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"><i data-lucide="brain" class="w-3 h-3"></i> Machine Learning</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-4 justify-center md:justify-start">
-                            <a href="https://www.linkedin.com/in/adrián-pons-choví" target="_blank" class="px-4 py-2 bg-blue-600/20 border border-blue-500/40 hover:bg-blue-600/40 rounded-xl text-sm text-blue-400 flex items-center gap-2 transition-all font-semibold">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                                Mi LinkedIn
-                            </a>
-                            <a href="https://github.com/Pons1" target="_blank" class="px-4 py-2 bg-white/5 border border-white/10 hover:border-white/30 rounded-xl text-sm text-gray-300 flex items-center gap-2 transition-all font-semibold">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-                                Mi GitHub
-                            </a>
-                        </div>
-                    </div>
+                <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                  <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2"
+                    >Rango de Edad</label
+                  >
+                  <select
+                    id="user-edad"
+                    class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm"
+                  >
+                    <option value="<25" class="bg-black">Menor de 25 años</option>
+                    <option value="25-44" class="bg-black">Entre 25 y 44 años</option>
+                    <option value=">44" class="bg-black">Mayor de 44 años</option>
+                  </select>
                 </div>
+              </div>
+
+              <div class="bg-black/50 p-3 rounded-xl border border-white/10">
+                <label class="text-xs text-blue-400 font-bold uppercase tracking-wider block mb-2"
+                  >Provincia de Análisis</label
+                >
+                <select
+                  id="user-provincia"
+                  class="w-full bg-transparent outline-none text-white appearance-none cursor-pointer text-sm"
+                >
+                  <option value="VALENCIA" class="bg-black">Provincia de València</option>
+                  <option value="ALICANTE" class="bg-black">Provincia de Alicante</option>
+                  <option value="CASTELLON" class="bg-black">Provincia de Castellón</option>
+                </select>
+              </div>
+
+              <button
+                onclick="ejecutarOrientador()"
+                class="w-full bg-blue-600 hover:bg-blue-500 py-4 mt-2 rounded-xl font-bold text-lg transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)]"
+              >
+                INICIAR ANÁLISIS PREDICTIVO
+              </button>
             </div>
-        </section>
+          </div>
+
+          <div
+            class="bg-black border border-white/10 rounded-3xl p-6 font-mono text-sm h-full min-h-[350px] flex flex-col shadow-2xl relative"
+            data-aos="fade-left"
+          >
+            <div class="flex space-x-2 mb-6 border-b border-white/5 pb-4">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              <span class="text-gray-600 ml-4 font-bold tracking-widest">LaborIA_Matcher_v3.0</span>
+            </div>
+
+            <div id="terminal-output" class="space-y-3 text-blue-300 flex-1 overflow-y-auto pr-2">
+              <p class="text-gray-500">> Sistema en espera. Completa tu perfil y lanza el análisis.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="equipo" class="scroll-mt-24">
+        <div class="glass-card p-8 md:p-12 rounded-[2rem]" data-aos="zoom-in">
+          <div class="flex flex-col md:flex-row items-center gap-10">
+            <div class="flex-shrink-0 relative">
+              <div class="absolute inset-0 bg-blue-500 rounded-full blur-[40px] opacity-20"></div>
+              <div
+                class="w-40 h-40 rounded-full border-2 border-blue-500/50 bg-black flex items-center justify-center relative z-10 overflow-hidden"
+              >
+                <img
+                  src="pfp.png"
+                  alt="Adrián Pons Choví"
+                  class="w-full h-full object-cover"
+                  onerror="
+                    this.style.display = 'none';
+                    this.nextElementSibling.style.display = 'block';
+                  "
+                />
+                <i data-lucide="user-square-2" class="text-blue-500 w-20 h-20 hidden"></i>
+              </div>
+            </div>
+
+            <div class="text-center md:text-left flex-1">
+              <h4 class="text-blue-400 font-bold uppercase tracking-widest text-sm mb-2">Trabajo de Fin de Máster</h4>
+              <h2 class="text-3xl md:text-4xl font-bold mb-4 uppercase tracking-tight text-white">
+                Desarrollado por <span class="text-blue-500">Adrián Pons Choví</span>
+              </h2>
+              <p class="text-gray-400 text-sm md:text-base leading-relaxed mb-6">
+                Este proyecto ha sido concebido, diseñado y desplegado íntegramente como Trabajo de Fin de Máster.
+                Combina la ingeniería de datos, el entrenamiento de modelos predictivos y el desarrollo web Full-Stack
+                para crear una herramienta que aporte valor real al mercado laboral.
+              </p>
+
+              <div class="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
+                <span
+                  class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"
+                  ><i data-lucide="code-2" class="w-3 h-3"></i> Full-Stack Dev</span
+                >
+                <span
+                  class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"
+                  ><i data-lucide="server" class="w-3 h-3"></i> Data Engineer</span
+                >
+                <span
+                  class="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300 flex items-center gap-2"
+                  ><i data-lucide="brain" class="w-3 h-3"></i> Machine Learning</span
+                >
+              </div>
+
+              <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                <a
+                  href="https://www.linkedin.com/in/adrián-pons-choví"
+                  target="_blank"
+                  class="px-4 py-2 bg-blue-600/20 border border-blue-500/40 hover:bg-blue-600/40 rounded-xl text-sm text-blue-400 flex items-center gap-2 transition-all font-semibold"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4"
+                  >
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                  </svg>
+                  Mi LinkedIn
+                </a>
+                <a
+                  href="https://github.com/Pons1"
+                  target="_blank"
+                  class="px-4 py-2 bg-white/5 border border-white/10 hover:border-white/30 rounded-xl text-sm text-gray-300 flex items-center gap-2 transition-all font-semibold"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="w-4 h-4"
+                  >
+                    <path
+                      d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+                    ></path>
+                    <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                  </svg>
+                  Mi GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="border-t border-white/10 bg-black/50 py-10 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex justify-center items-center gap-6 mb-4 opacity-60">
-                <a href="https://github.com/Pons1" target="_blank" class="hover:text-blue-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
-                </a>
-                <a href="https://www.linkedin.com/in/adrián-pons-choví" target="_blank" class="hover:text-blue-500 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
-            </div>
-            <p class="text-xs text-gray-600 uppercase tracking-widest font-mono">&copy; 2026 LaborIA València. Todos los derechos reservados.</p>
+      <div class="container mx-auto px-4 text-center">
+        <div class="flex justify-center items-center gap-6 mb-4 opacity-60">
+          <a href="https://github.com/Pons1" target="_blank" class="hover:text-blue-500 transition-colors">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-5 h-5"
+            >
+              <path
+                d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+              ></path>
+              <path d="M9 18c-4.51 2-5-2-7-2"></path>
+            </svg>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/adrián-pons-choví"
+            target="_blank"
+            class="hover:text-blue-500 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="w-5 h-5"
+            >
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+          </a>
         </div>
+        <p class="text-xs text-gray-600 uppercase tracking-widest font-mono">
+          &copy; 2026 LaborIA València. Todos los derechos reservados.
+        </p>
+      </div>
     </footer>
 
     <script>
-        AOS.init({ duration: 1000, once: true });
-        lucide.createIcons();
+      AOS.init({ duration: 1000, once: true });
+      lucide.createIcons();
 
-        const text = "ANALIZANDO EL MERCADO";
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) { document.getElementById("typewriter").innerHTML += text.charAt(i); i++; setTimeout(typeWriter, 100); }
+      const text = 'ANALIZANDO EL MERCADO';
+      let i = 0;
+      function typeWriter() {
+        if (i < text.length) {
+          document.getElementById('typewriter').innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, 100);
         }
-        typeWriter();
+      }
+      typeWriter();
 
-        let charts = {};
-        let mapaLeaflet = null;
-        const colors = { blue: '#3b82f6', cyan: '#06b6d4', purple: '#a855f7', pink: '#ec4899' };
+      let charts = {};
+      let mapaLeaflet = null;
+      const colors = { blue: '#3b82f6', cyan: '#06b6d4', purple: '#a855f7', pink: '#ec4899' };
 
-        Chart.defaults.color = '#666';
-        Chart.defaults.font.family = 'Inter';
+      Chart.defaults.color = '#666';
+      Chart.defaults.font.family = 'Inter';
 
-        async function cargarDatosBD() {
-            const statusDiv = document.getElementById('db-status');
-            try {
-                const response = await fetch('https://laboria-valencia.duckdns.org/api/stats');
-                if (!response.ok) throw new Error("Error en el servidor");
-                const data = await response.json();
+      async function cargarDatosBD() {
+        const statusDiv = document.getElementById('db-status');
+        try {
+          const response = await fetch('https://laboria-valencia.duckdns.org/api/stats');
+          if (!response.ok) throw new Error('Error en el servidor');
+          const data = await response.json();
 
-                document.getElementById('count-contratos').setAttribute('data-target', data.contratos);
-                document.getElementById('count-precision').setAttribute('data-target', data.precision);
-                document.getElementById('count-municipios').setAttribute('data-target', data.municipios);
+          document.getElementById('count-contratos').setAttribute('data-target', data.contratos);
+          document.getElementById('count-precision').setAttribute('data-target', data.precision);
+          document.getElementById('count-municipios').setAttribute('data-target', data.municipios);
 
-                statusDiv.innerText = "🟢 Conectado a AWS Cloud | Sincronización completa por Caché (22.5M Reg)";
-                statusDiv.classList.remove('text-yellow-500', 'animate-pulse');
-                statusDiv.classList.add('text-green-500');
+          statusDiv.innerText = '🟢 Conectado a AWS Cloud | Sincronización completa por Caché (22.5M Reg)';
+          statusDiv.classList.remove('text-yellow-500', 'animate-pulse');
+          statusDiv.classList.add('text-green-500');
 
-                renderLineChart('chartAnual', data.graficaAnual);
-                renderDoughnutChart('chartSector', data.graficaSector);
-                renderBarChart('chartEdad', data.graficaEdad);
-                renderPieChart('chartGenero', data.graficaGenero);
+          renderLineChart('chartAnual', data.graficaAnual);
+          renderDoughnutChart('chartSector', data.graficaSector);
+          renderBarChart('chartEdad', data.graficaEdad);
+          renderPieChart('chartGenero', data.graficaGenero);
 
-                renderizarMapaMunicipios(data.datosMapa);
+          renderizarMapaMunicipios(data.datosMapa);
+        } catch (error) {
+          console.error('Error:', error);
+          statusDiv.innerText = '🔴 Error de conexión - AWS Cloud Server fuera de línea';
+          statusDiv.classList.add('text-red-500');
+        } finally {
+          animarContadores();
+        }
+      }
 
-            } catch (error) {
-                console.error("Error:", error);
-                statusDiv.innerText = "🔴 Error de conexión - AWS Cloud Server fuera de línea";
-                statusDiv.classList.add('text-red-500');
-            } finally {
-                animarContadores();
+      function animarContadores() {
+        document.querySelectorAll('.counter').forEach((counter) => {
+          const target = +counter.getAttribute('data-target');
+          const updateCount = () => {
+            const count = +counter.innerText.replace(/,/g, '').replace('%', '');
+            const inc = Math.max(1, Math.ceil(target / 40));
+            if (count < target) {
+              counter.innerText = (count + inc).toLocaleString();
+              setTimeout(updateCount, 40);
+            } else {
+              counter.innerText = target.toLocaleString() + (counter.id === 'count-precision' ? '%' : '');
             }
+          };
+          updateCount();
+        });
+      }
+
+      function clearChart(id) {
+        if (charts[id]) charts[id].destroy();
+      }
+
+      function renderLineChart(id, data) {
+        clearChart(id);
+        charts[id] = new Chart(document.getElementById(id), {
+          type: 'line',
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                label: 'Contratos Anuales',
+                data: data.datos,
+                borderColor: '#3b82f6',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4
+              }
+            ]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      function renderDoughnutChart(id, data) {
+        clearChart(id);
+        charts[id] = new Chart(document.getElementById(id), {
+          type: 'doughnut',
+          data: {
+            labels: data.labels,
+            datasets: [
+              {
+                data: data.datos,
+                backgroundColor: [colors.blue, colors.cyan, colors.purple, colors.pink, '#475569'],
+                borderWidth: 0
+              }
+            ]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      function renderBarChart(id, data) {
+        clearChart(id);
+        charts[id] = new Chart(document.getElementById(id), {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{ label: 'Contratos por Edad', data: data.datos, backgroundColor: colors.cyan, borderRadius: 4 }]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+      }
+
+      function renderPieChart(id, data) {
+        clearChart(id);
+        charts[id] = new Chart(document.getElementById(id), {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{ data: data.datos, backgroundColor: [colors.pink, colors.blue, colors.purple], borderWidth: 0 }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', boxWidth: 12 } } }
+          }
+        });
+      }
+
+      function renderizarMapaMunicipios(datosMapa) {
+        if (!mapaLeaflet) {
+          mapaLeaflet = L.map('map', { scrollWheelZoom: false }).setView([39.38, -0.4], 9);
+          L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CartoDB'
+          }).addTo(mapaLeaflet);
         }
 
-        function animarContadores() {
-            document.querySelectorAll('.counter').forEach(counter => {
-                const target = +counter.getAttribute('data-target');
-                const updateCount = () => {
-                    const count = +counter.innerText.replace(/,/g, '').replace('%', '');
-                    const inc = Math.max(1, Math.ceil(target / 40));
-                    if (count < target) {
-                        counter.innerText = (count + inc).toLocaleString();
-                        setTimeout(updateCount, 40);
-                    } else {
-                        counter.innerText = target.toLocaleString() + (counter.id === 'count-precision' ? "%" : "");
-                    }
-                };
-                updateCount();
+        const catalogoMunicipios = [
+          { id: 'VALENCIA', nombre: 'València (Capital)', coords: [39.4699, -0.3763], color: colors.blue },
+          { id: 'ALICANTE', nombre: 'Alacant / Alicante', coords: [38.3452, -0.481], color: colors.cyan },
+          { id: 'CASTELLON', nombre: 'Castelló de la Plana', coords: [39.9864, -0.0513], color: colors.purple },
+          { id: 'ELCHE', nombre: 'Elx / Elche', coords: [38.2622, -0.6994], color: colors.cyan },
+          { id: 'TORRENTE', nombre: 'Torrent', coords: [39.4371, -0.4651], color: colors.blue },
+          { id: 'SAGUNTO', nombre: 'Sagunt / Sagunto', coords: [39.6792, -0.2782], color: colors.blue },
+          { id: 'PATERNA', nombre: 'Paterna (Polígonos)', coords: [39.5068, -0.4394], color: colors.pink },
+          { id: 'ALZIRA', nombre: 'Alzira', coords: [39.1522, -0.4338], color: colors.blue },
+          { id: 'GANDIA', nombre: 'Gandia', coords: [38.9679, -0.1802], color: colors.blue },
+          { id: 'ALCOY', nombre: 'Alcoi / Alcoy', coords: [38.6983, -0.4736], color: colors.cyan },
+          { id: 'ELDRE', nombre: 'Elda', coords: [38.4789, -0.7958], color: colors.cyan },
+          { id: 'VILA-REAL', nombre: 'Vila-real', coords: [39.9372, -0.1009], color: colors.purple },
+          { id: 'BURRIANA', nombre: 'Borriana / Burriana', coords: [39.8889, -0.0844], color: colors.purple },
+          { id: 'ONTINYENT', nombre: 'Ontinyent', coords: [38.8222, -0.6061], color: colors.blue },
+          { id: 'XATIVA', nombre: 'Xàtiva', coords: [38.9892, -0.5208], color: colors.blue },
+          { id: 'BENIDORM', nombre: 'Benidorm (Turismo)', coords: [38.5382, -0.1265], color: colors.pink },
+          { id: 'TORREVIEJA', nombre: 'Torrevieja', coords: [37.9778, -0.6826], color: colors.cyan },
+          { id: 'MISLATA', nombre: 'Mislata', coords: [39.4754, -0.4137], color: colors.blue },
+          { id: 'ALDAYA', nombre: 'Aldaia', coords: [39.4646, -0.4623], color: colors.blue },
+          { id: 'REQUENA', nombre: 'Requena', coords: [39.4883, -1.1004], color: colors.blue },
+          { id: 'ORIHUELA', nombre: 'Orihuela', coords: [38.0853, -0.9483], color: colors.cyan }
+        ];
+
+        catalogoMunicipios.forEach((mun) => {
+          let contratosLocales = 0;
+          if (datosMapa) {
+            Object.keys(datosMapa).forEach((claveBBDD) => {
+              const normalizadaClave = claveBBDD.toUpperCase();
+              if (
+                normalizadaClave.includes(mun.id) ||
+                (mun.id === 'TORRENTE' && normalizadaClave.includes('TORRENT'))
+              ) {
+                contratosLocales += datosMapa[claveBBDD];
+              }
             });
-        }
+          }
+          if (contratosLocales === 0) {
+            const bases = {
+              VALENCIA: 11200000,
+              ALICANTE: 4100000,
+              CASTELLON: 1900000,
+              ELCHE: 1500000,
+              TORRENTE: 430000,
+              SAGUNTO: 510000,
+              PATERNA: 680000,
+              GANDIA: 390000,
+              BENIDORM: 710000,
+              ALZIRA: 280000,
+              'VILA-REAL': 410000
+            };
+            contratosLocales = bases[mun.id] || 120000;
+          }
 
-        function clearChart(id) { if(charts[id]) charts[id].destroy(); }
+          const radioEscalado = Math.sqrt(contratosLocales) * 1.8;
 
-        function renderLineChart(id, data) {
-            clearChart(id);
-            charts[id] = new Chart(document.getElementById(id), {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Contratos Anuales',
-                        data: data.datos,
-                        borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        fill: true, tension: 0.4, pointRadius: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
+          const circle = L.circle(mun.coords, {
+            color: mun.color,
+            fillColor: mun.color,
+            fillOpacity: 0.3,
+            weight: 1.5,
+            radius: Math.max(1200, radioEscalado)
+          }).addTo(mapaLeaflet);
 
-        function renderDoughnutChart(id, data) {
-            clearChart(id);
-            charts[id] = new Chart(document.getElementById(id), {
-                type: 'doughnut',
-                data: {
-                    labels: data.labels,
-                    datasets: [{ data: data.datos, backgroundColor: [colors.blue, colors.cyan, colors.purple, colors.pink, '#475569'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
-
-        function renderBarChart(id, data) {
-            clearChart(id);
-            charts[id] = new Chart(document.getElementById(id), {
-                type: 'bar',
-                data: {
-                    labels: data.labels,
-                    datasets: [{ label: 'Contratos por Edad', data: data.datos, backgroundColor: colors.cyan, borderRadius: 4 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
-        }
-
-        function renderPieChart(id, data) {
-            clearChart(id);
-            charts[id] = new Chart(document.getElementById(id), {
-                type: 'pie',
-                data: {
-                    labels: data.labels,
-                    datasets: [{ data: data.datos, backgroundColor: [colors.pink, colors.blue, colors.purple], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', boxWidth: 12 } } } }
-            });
-        }
-
-        function renderizarMapaMunicipios(datosMapa) {
-            if (!mapaLeaflet) {
-                mapaLeaflet = L.map('map', { scrollWheelZoom: false }).setView([39.38, -0.4], 9);
-                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                    attribution: '&copy; OpenStreetMap &copy; CartoDB'
-                }).addTo(mapaLeaflet);
-            }
-
-            const catalogoMunicipios = [
-                { id: "VALENCIA", nombre: "València (Capital)", coords: [39.4699, -0.3763], color: colors.blue },
-                { id: "ALICANTE", nombre: "Alacant / Alicante", coords: [38.3452, -0.4810], color: colors.cyan },
-                { id: "CASTELLON", nombre: "Castelló de la Plana", coords: [39.9864, -0.0513], color: colors.purple },
-                { id: "ELCHE", nombre: "Elx / Elche", coords: [38.2622, -0.6994], color: colors.cyan },
-                { id: "TORRENTE", nombre: "Torrent", coords: [39.4371, -0.4651], color: colors.blue },
-                { id: "SAGUNTO", nombre: "Sagunt / Sagunto", coords: [39.6792, -0.2782], color: colors.blue },
-                { id: "PATERNA", nombre: "Paterna (Polígonos)", coords: [39.5068, -0.4394], color: colors.pink },
-                { id: "ALZIRA", nombre: "Alzira", coords: [39.1522, -0.4338], color: colors.blue },
-                { id: "GANDIA", nombre: "Gandia", coords: [38.9679, -0.1802], color: colors.blue },
-                { id: "ALCOY", nombre: "Alcoi / Alcoy", coords: [38.6983, -0.4736], color: colors.cyan },
-                { id: "ELDRE", nombre: "Elda", coords: [38.4789, -0.7958], color: colors.cyan },
-                { id: "VILA-REAL", nombre: "Vila-real", coords: [39.9372, -0.1009], color: colors.purple },
-                { id: "BURRIANA", nombre: "Borriana / Burriana", coords: [39.8889, -0.0844], color: colors.purple },
-                { id: "ONTINYENT", nombre: "Ontinyent", coords: [38.8222, -0.6061], color: colors.blue },
-                { id: "XATIVA", nombre: "Xàtiva", coords: [38.9892, -0.5208], color: colors.blue },
-                { id: "BENIDORM", nombre: "Benidorm (Turismo)", coords: [38.5382, -0.1265], color: colors.pink },
-                { id: "TORREVIEJA", nombre: "Torrevieja", coords: [37.9778, -0.6826], color: colors.cyan },
-                { id: "MISLATA", nombre: "Mislata", coords: [39.4754, -0.4137], color: colors.blue },
-                { id: "ALDAYA", nombre: "Aldaia", coords: [39.4646, -0.4623], color: colors.blue },
-                { id: "REQUENA", nombre: "Requena", coords: [39.4883, -1.1004], color: colors.blue },
-                { id: "ORIHUELA", nombre: "Orihuela", coords: [38.0853, -0.9483], color: colors.cyan }
-            ];
-
-            catalogoMunicipios.forEach(mun => {
-                let contratosLocales = 0;
-                if (datosMapa) {
-                    Object.keys(datosMapa).forEach(claveBBDD => {
-                        const normalizadaClave = claveBBDD.toUpperCase();
-                        if (normalizadaClave.includes(mun.id) || (mun.id === "TORRENTE" && normalizadaClave.includes("TORRENT"))) {
-                            contratosLocales += datosMapa[claveBBDD];
-                        }
-                    });
-                }
-                if (contratosLocales === 0) {
-                    const bases = { "VALENCIA": 11200000, "ALICANTE": 4100000, "CASTELLON": 1900000, "ELCHE": 1500000, "TORRENTE": 430000, "SAGUNTO": 510000, "PATERNA": 680000, "GANDIA": 390000, "BENIDORM": 710000, "ALZIRA": 280000, "VILA-REAL": 410000 };
-                    contratosLocales = bases[mun.id] || 120000;
-                }
-
-                const radioEscalado = Math.sqrt(contratosLocales) * 1.8;
-
-                const circle = L.circle(mun.coords, {
-                    color: mun.color,
-                    fillColor: mun.color,
-                    fillOpacity: 0.3,
-                    weight: 1.5,
-                    radius: Math.max(1200, radioEscalado)
-                }).addTo(mapaLeaflet);
-
-                circle.bindPopup(`
+          circle.bindPopup(`
                     <div style="font-family: 'Inter', sans-serif; color: #fff; min-width: 140px;">
                         <h4 style="font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: bold; border-b: 1px solid #333; margin: 0 0 4px 0; padding-bottom: 2px; color: ${mun.color}; text-transform: uppercase;">${mun.nombre}</h4>
                         <span style="font-size: 10px; color: #888; display: block;">Contratos analizados:</span>
@@ -486,71 +745,161 @@
                     </div>
                 `);
 
-                circle.on('mouseover', function () { this.setStyle({ fillOpacity: 0.55, weight: 2.5 }); });
-                circle.on('mouseout', function () { this.setStyle({ fillOpacity: 0.3, weight: 1.5 }); });
-            });
+          circle.on('mouseover', function () {
+            this.setStyle({ fillOpacity: 0.55, weight: 2.5 });
+          });
+          circle.on('mouseout', function () {
+            this.setStyle({ fillOpacity: 0.3, weight: 1.5 });
+          });
+        });
+      }
+
+      async function ejecutarOrientador() {
+        const terminal = document.getElementById('terminal-output');
+
+        // Extracción de variables
+        const sector = document.getElementById('user-sector').value;
+        const genero = document.getElementById('user-genero').value;
+        const edad = document.getElementById('user-edad').value;
+        const provincia = document.getElementById('user-provincia').value;
+
+        terminal.innerHTML = '';
+
+        const rutinas = [
+          '> Estableciendo túnel de comunicación con nodo AWS EC2...',
+          '> Compilando vector de características sociodemográficas...',
+          `> Perfil validado: [${genero} | Edad: ${edad} | Sector: ${sector}]`,
+          `> Georreferenciación base: [Provincia: ${provincia}]`,
+          '> Evaluando histórico espacial de 22.5 millones de contrataciones...',
+          '> Ejecutando inferencia probabilística en modelo Random Forest...',
+          '> Consolidando predicción final...'
+        ];
+
+        for (let i = 0; i < rutinas.length; i++) {
+          setTimeout(() => (terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`), i * 500);
         }
 
-        async function ejecutarOrientador() {
-            const terminal = document.getElementById('terminal-output');
+        setTimeout(async () => {
+          try {
+            const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                mes: 8,
+                sector: sector,
+                genero: genero,
+                edad: edad,
+                provincia: provincia
+              })
+            });
 
-            // Extracción de variables ajustada a la base de datos y al modelo
-            const sector = document.getElementById('user-sector').value;
-            const genero = document.getElementById('user-genero').value;
-            const edad = document.getElementById('user-edad').value;
-            const provincia = document.getElementById('user-provincia').value;
+            const data = await respuesta.json();
 
-            terminal.innerHTML = "";
+            if (data.status === 'success') {
+              // 🔥 NUEVA INTERFAZ VISUAL PARA LA RESPUESTA DEL AGENTE 🔥
+              terminal.innerHTML += `
+                    <div class="mt-8 border border-blue-500/40 bg-gradient-to-b from-blue-900/20 to-black rounded-xl overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.15)] relative animate-[fadeIn_0.5s_ease-out]">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
 
-            const rutinas = [
-                "> Estableciendo túnel de comunicación con nodo AWS EC2...",
-                "> Compilando vector de características sociodemográficas...",
-                `> Perfil validado: [${genero} | Edad: ${edad} | Sector: ${sector}]`,
-                `> Georreferenciación base: [Provincia: ${provincia}]`,
-                "> Evaluando histórico espacial de 22.5 millones de contrataciones...",
-                "> Ejecutando inferencia probabilística en modelo Random Forest...",
-                "> Consolidando predicción final..."
-            ];
+                        <div class="bg-blue-500/10 px-5 py-3 border-b border-blue-500/20 flex items-center justify-between">
+                            <span class="text-blue-400 text-xs font-bold tracking-widest uppercase flex items-center gap-2">
+                                <i data-lucide="cpu" class="w-4 h-4"></i> Predicción Generada
+                            </span>
+                            <span class="text-blue-400/50 text-[10px] font-mono">AWS ML-Engine</span>
+                        </div>
 
-            for (let i = 0; i < rutinas.length; i++) {
-                setTimeout(() => terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`, i * 500);
+                        <div class="p-6 font-sans">
+                            <div class="flex items-center gap-5 mb-5 pb-5 border-b border-white/10">
+                                <div class="w-14 h-14 rounded-full bg-blue-500/20 border border-blue-500/50 flex items-center justify-center text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.4)] flex-shrink-0">
+                                    <i data-lucide="trending-up" class="w-7 h-7"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 text-xs uppercase tracking-widest mb-1">Estimación Contractual Mensual</p>
+                                    <p class="text-4xl font-bold text-white tracking-tighter">
+                                        ${data.prediccion_numerica ? data.prediccion_numerica.toLocaleString() : '---'}
+                                        <span class="text-base font-normal text-blue-500 tracking-normal">ofertas</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="text-gray-300 text-sm leading-relaxed">
+                                ${data.mensaje}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+              // Recargamos los iconos para que aparezcan los nuevos que acabamos de inyectar
+              lucide.createIcons();
+
+              // Hacemos scroll automático hacia abajo para que el usuario vea el resultado
+              terminal.scrollTop = terminal.scrollHeight;
+            } else {
+              terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR DEL AGENTE: ${data.mensaje}</p>`;
             }
+          } catch (error) {
+            terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: El microservicio Python Flask en AWS no responde.</p>`;
+          }
+        }, rutinas.length * 500);
+      }
+      const terminal = document.getElementById('terminal-output');
 
-            setTimeout(async () => {
-                try {
-                    // Enviamos la petición asegurando que los nombres de las claves (keys)
-                    // coincidan con lo que espera recibir tu servidor de Python
-                    const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            mes: 8,
-                            sector: sector,
-                            genero: genero,
-                            edad: edad,
-                            provincia: provincia
-                        })
-                    });
+      // Extracción de variables ajustada a la base de datos y al modelo
+      const sector = document.getElementById('user-sector').value;
+      const genero = document.getElementById('user-genero').value;
+      const edad = document.getElementById('user-edad').value;
+      const provincia = document.getElementById('user-provincia').value;
 
-                    const data = await respuesta.json();
+      terminal.innerHTML = '';
 
-                    if (data.status === "success") {
-                        terminal.innerHTML += `
+      const rutinas = [
+        '> Estableciendo túnel de comunicación con nodo AWS EC2...',
+        '> Compilando vector de características sociodemográficas...',
+        `> Perfil validado: [${genero} | Edad: ${edad} | Sector: ${sector}]`,
+        `> Georreferenciación base: [Provincia: ${provincia}]`,
+        '> Evaluando histórico espacial de 22.5 millones de contrataciones...',
+        '> Ejecutando inferencia probabilística en modelo Random Forest...',
+        '> Consolidando predicción final...'
+      ];
+
+      for (let i = 0; i < rutinas.length; i++) {
+        setTimeout(() => (terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`), i * 500);
+      }
+
+      setTimeout(async () => {
+        try {
+          // Enviamos la petición asegurando que los nombres de las claves (keys)
+          // coincidan con lo que espera recibir tu servidor de Python
+          const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              mes: 8,
+              sector: sector,
+              genero: genero,
+              edad: edad,
+              provincia: provincia
+            })
+          });
+
+          const data = await respuesta.json();
+
+          if (data.status === 'success') {
+            terminal.innerHTML += `
                             <div class="mt-6 p-4 border border-green-500/30 bg-green-500/10 rounded-lg animate-pulse">
                                 <p class="text-green-400 font-bold mb-2">✅ ANÁLISIS COMPLETADO EN AWS</p>
                                 <p class="text-white text-base leading-relaxed">${data.mensaje}</p>
                             </div>
                         `;
-                    } else {
-                        terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR DEL AGENTE: ${data.mensaje}</p>`;
-                    }
-                } catch (error) {
-                    terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: El microservicio Python Flask en AWS no responde.</p>`;
-                }
-            }, rutinas.length * 500);
+          } else {
+            terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR DEL AGENTE: ${data.mensaje}</p>`;
+          }
+        } catch (error) {
+          terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR FATAL: El microservicio Python Flask en AWS no responde.</p>`;
         }
+      }, rutinas.length * 500);
 
-        window.addEventListener('DOMContentLoaded', cargarDatosBD);
+      window.addEventListener('DOMContentLoaded', cargarDatosBD);
     </script>
-</body>
+  </body>
 </html>
