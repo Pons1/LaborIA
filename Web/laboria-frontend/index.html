@@ -502,21 +502,16 @@
 
             terminal.innerHTML = "";
 
-            // 🔥 TEXTOS MUCHO MÁS HUMANOS Y CERCANOS
-            const rutinas = [
-                "> Conectando con el asistente virtual...",
-                "> Revisando tu perfil...",
-                `> Datos recibidos: [${genero} | Edad: ${edad} | Sector: ${sector}]`,
-                `> Zona de búsqueda: [${provincia}]`,
-                "> Consultando la base de datos de empleo...",
-                "> Analizando tus mejores opciones...",
-                "> Preparando tus resultados..."
-            ];
+           // Indicador de carga minimalista y elegante
+            terminal.innerHTML = `
+                <div class="flex items-center gap-3 text-blue-400 opacity-80 animate-pulse mt-2">
+                    <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
+                    <span class="tracking-widest uppercase text-xs font-bold">Procesando datos y generando predicción...</span>
+                </div>
+            `;
+            lucide.createIcons();
 
-            for (let i = 0; i < rutinas.length; i++) {
-                setTimeout(() => terminal.innerHTML += `<p class="opacity-70">${rutinas[i]}</p>`, i * 500);
-            }
-
+            // Le damos 1.5 segundos de "simulación de carga" para que el usuario vea el efecto
             setTimeout(async () => {
                 try {
                     const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
