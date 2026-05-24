@@ -491,7 +491,7 @@
             });
         }
 
-        async function ejecutarOrientador() {
+async function ejecutarOrientador() {
             const terminal = document.getElementById('terminal-output');
 
             // Extracción de variables
@@ -500,9 +500,7 @@
             const edad = document.getElementById('user-edad').value;
             const provincia = document.getElementById('user-provincia').value;
 
-            terminal.innerHTML = "";
-
-           // Indicador de carga minimalista y elegante
+            // Indicador de carga minimalista y elegante (Sustituye todo lo que hubiera antes)
             terminal.innerHTML = `
                 <div class="flex items-center gap-3 text-blue-400 opacity-80 animate-pulse mt-2">
                     <i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i>
@@ -511,7 +509,7 @@
             `;
             lucide.createIcons();
 
-            // Le damos 1.5 segundos de "simulación de carga" para que el usuario vea el efecto
+            // Simulación de carga de 1.5 segundos
             setTimeout(async () => {
                 try {
                     const respuesta = await fetch('https://laboria-valencia.duckdns.org/predecir', {
@@ -529,9 +527,9 @@
                     const data = await respuesta.json();
 
                     if (data.status === "success") {
-                        // 🔥 UI MÁS LIMPIA Y MENOS TÉCNICA
-                        terminal.innerHTML += `
-                            <div class="mt-8 border border-blue-500/40 bg-gradient-to-b from-blue-900/20 to-black rounded-xl overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.15)] relative animate-[fadeIn_0.5s_ease-out]">
+                        // 🔥 OJO AQUÍ: Usamos "=" en lugar de "+=" para que borre el mensaje de carga
+                        terminal.innerHTML = `
+                            <div class="mt-2 border border-blue-500/40 bg-gradient-to-b from-blue-900/20 to-black rounded-xl overflow-hidden shadow-[0_0_20px_rgba(59,130,246,0.15)] relative animate-[fadeIn_0.5s_ease-out]">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent"></div>
 
                                 <div class="bg-blue-500/10 px-5 py-3 border-b border-blue-500/20 flex items-center justify-between">
@@ -566,12 +564,13 @@
                         terminal.scrollTop = terminal.scrollHeight;
 
                     } else {
-                        terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> ERROR: ${data.mensaje}</p>`;
+                        // También usamos "=" aquí por si hay errores
+                        terminal.innerHTML = `<p class="text-red-500 font-bold mt-4">> ERROR: ${data.mensaje}</p>`;
                     }
                 } catch (error) {
-                    terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> Vaya, parece que hay un problema de conexión con el servidor.</p>`;
+                    terminal.innerHTML = `<p class="text-red-500 font-bold mt-4">> Vaya, parece que hay un problema de conexión con el servidor.</p>`;
                 }
-            }, 1500);
+            }, 1500); // 1500 milisegundos
         }
 
         window.addEventListener('DOMContentLoaded', cargarDatosBD);
