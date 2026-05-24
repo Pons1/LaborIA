@@ -571,7 +571,7 @@
                 } catch (error) {
                     terminal.innerHTML += `<p class="text-red-500 font-bold mt-4">> Vaya, parece que hay un problema de conexión con el servidor.</p>`;
                 }
-            }, rutinas.length * 500);
+            }, 1500);
         }
 
         window.addEventListener('DOMContentLoaded', cargarDatosBD);
